@@ -1,0 +1,178 @@
+{
+  "test_cases": [
+    {
+      "name": "MFA and Encryption - Full and Partial Match",
+      "trust_center_controls": [
+        {
+          "control_id": "TC-1",
+          "text": "Administrative accounts must use multi-factor authentication.",
+          "domain": "Access Control",
+          "source": "trust_center"
+        },
+        {
+          "control_id": "TC-2",
+          "text": "Customer data is encrypted at rest with AES-256.",
+          "domain": "Encryption",
+          "source": "trust_center"
+        }
+      ],
+      "document_controls": [
+        {
+          "control_id": "DOC-1",
+          "text": "Remote access requires a second authentication factor.",
+          "domain": "Access Control",
+          "source": "document"
+        }
+      ],
+      "base_controls": [
+        {
+          "control_id": "NCC-1",
+          "text": "Multi-factor authentication is required for privileged and remote access.",
+          "domain": "Access Control"
+        },
+        {
+          "control_id": "NCC-2",
+          "text": "Sensitive customer data is encrypted at rest and in transit.",
+          "domain": "Encryption"
+        }
+      ],
+      "mappings": [
+        {
+          "source_control_ids": ["TC-1", "DOC-1"],
+          "base_control_ids": ["NCC-1"],
+          "match_type": "full",
+          "rationale": "TC-1 covers admin MFA and DOC-1 covers remote access MFA together fully satisfying NCC-1.",
+          "source_controls": [
+            {"control_id": "TC-1", "text": "Administrative accounts must use multi-factor authentication.", "domain": "Access Control", "source": "trust_center"},
+            {"control_id": "DOC-1", "text": "Remote access requires a second authentication factor.", "domain": "Access Control", "source": "document"}
+          ],
+          "base_controls": [
+            {"control_id": "NCC-1", "text": "Multi-factor authentication is required for privileged and remote access.", "domain": "Access Control"}
+          ]
+        },
+        {
+          "source_control_ids": ["TC-2"],
+          "base_control_ids": ["NCC-2"],
+          "match_type": "partial",
+          "rationale": "TC-2 only covers encryption at rest; NCC-2 also requires encryption in transit.",
+          "source_controls": [
+            {"control_id": "TC-2", "text": "Customer data is encrypted at rest with AES-256.", "domain": "Encryption", "source": "trust_center"}
+          ],
+          "base_controls": [
+            {"control_id": "NCC-2", "text": "Sensitive customer data is encrypted at rest and in transit.", "domain": "Encryption"}
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Logging and Incident Response",
+      "trust_center_controls": [
+        {
+          "control_id": "TC-1",
+          "text": "All access to production systems is logged and monitored.",
+          "domain": "Logging",
+          "source": "trust_center"
+        },
+        {
+          "control_id": "TC-2",
+          "text": "Security events are retained for 12 months.",
+          "domain": "Logging",
+          "source": "trust_center"
+        },
+        {
+          "control_id": "TC-3",
+          "text": "We maintain a 24/7 security operations team that responds to incidents.",
+          "domain": "Incident Response",
+          "source": "trust_center"
+        }
+      ],
+      "document_controls": [
+        {
+          "control_id": "DOC-1",
+          "text": "An incident response policy and procedures are documented and reviewed annually.",
+          "domain": "Incident Response",
+          "source": "document"
+        },
+        {
+          "control_id": "DOC-2",
+          "text": "Audit logs are protected against tampering using WORM storage.",
+          "domain": "Logging",
+          "source": "document"
+        }
+      ],
+      "base_controls": [
+        {
+          "control_id": "NCC-6",
+          "text": "Security-relevant events are logged and retained for at least 90 days.",
+          "domain": "Logging"
+        },
+        {
+          "control_id": "NCC-7",
+          "text": "Logs are protected from unauthorized modification or deletion.",
+          "domain": "Logging"
+        },
+        {
+          "control_id": "NCC-10",
+          "text": "A formal incident response plan is documented and tested annually.",
+          "domain": "Incident Response"
+        },
+        {
+          "control_id": "NCC-11",
+          "text": "Security incidents are investigated, contained, and documented.",
+          "domain": "Incident Response"
+        }
+      ],
+      "mappings": [
+        {
+          "source_control_ids": ["TC-1", "TC-2"],
+          "base_control_ids": ["NCC-6"],
+          "match_type": "full",
+          "rationale": "TC-1 covers logging and TC-2 confirms 12-month retention, exceeding the 90-day requirement.",
+          "source_controls": [
+            {"control_id": "TC-1", "text": "All access to production systems is logged and monitored.", "domain": "Logging", "source": "trust_center"},
+            {"control_id": "TC-2", "text": "Security events are retained for 12 months.", "domain": "Logging", "source": "trust_center"}
+          ],
+          "base_controls": [
+            {"control_id": "NCC-6", "text": "Security-relevant events are logged and retained for at least 90 days.", "domain": "Logging"}
+          ]
+        },
+        {
+          "source_control_ids": ["DOC-2"],
+          "base_control_ids": ["NCC-7"],
+          "match_type": "full",
+          "rationale": "WORM storage satisfies the tamper-protection requirement for logs.",
+          "source_controls": [
+            {"control_id": "DOC-2", "text": "Audit logs are protected against tampering using WORM storage.", "domain": "Logging", "source": "document"}
+          ],
+          "base_controls": [
+            {"control_id": "NCC-7", "text": "Logs are protected from unauthorized modification or deletion.", "domain": "Logging"}
+          ]
+        },
+        {
+          "source_control_ids": ["DOC-1"],
+          "base_control_ids": ["NCC-10"],
+          "match_type": "full",
+          "rationale": "DOC-1 directly matches NCC-10 with documented, annually reviewed IR policy.",
+          "source_controls": [
+            {"control_id": "DOC-1", "text": "An incident response policy and procedures are documented and reviewed annually.", "domain": "Incident Response", "source": "document"}
+          ],
+          "base_controls": [
+            {"control_id": "NCC-10", "text": "A formal incident response plan is documented and tested annually.", "domain": "Incident Response"}
+          ]
+        },
+        {
+          "source_control_ids": ["TC-3"],
+          "base_control_ids": ["NCC-11"],
+          "match_type": "partial",
+          "rationale": "TC-3 confirms 24/7 response capability but does not explicitly state incidents are documented.",
+          "source_controls": [
+            {"control_id": "TC-3", "text": "We maintain a 24/7 security operations team that responds to incidents.", "domain": "Incident Response", "source": "trust_center"}
+          ],
+          "base_controls": [
+            {"control_id": "NCC-11", "text": "Security incidents are investigated, contained, and documented.", "domain": "Incident Response"}
+          ]
+        }
+      ]
+    }
+  ]
+}

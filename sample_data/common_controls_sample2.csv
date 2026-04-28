@@ -1,0 +1,21 @@
+control_id,domain,text
+NCC-1,Access Control,Multi-factor authentication is required for privileged and remote access.
+NCC-2,Access Control,Access to systems is provisioned based on least privilege and role-based access control.
+NCC-3,Access Control,User access reviews are conducted at least annually.
+NCC-4,Encryption,Sensitive customer data is encrypted at rest using AES-256 or equivalent.
+NCC-5,Encryption,Data in transit is encrypted using TLS 1.2 or higher.
+NCC-6,Logging,Security-relevant events are logged and retained for at least 90 days.
+NCC-7,Logging,Logs are protected from unauthorized modification or deletion.
+NCC-8,Vulnerability Management,Vulnerability scans are conducted at least quarterly on all systems.
+NCC-9,Vulnerability Management,Critical vulnerabilities are remediated within 30 days of discovery.
+NCC-10,Incident Response,A formal incident response plan is documented and tested annually.
+NCC-11,Incident Response,Security incidents are investigated contained and documented.
+NCC-12,Change Management,Changes to production systems require approval and testing prior to deployment.
+NCC-13,HR Security,Background checks are performed on all employees with access to sensitive data.
+NCC-14,HR Security,Security awareness training is provided to all employees at least annually.
+NCC-15,Physical Security,Physical access to data centers is restricted and monitored.
+NCC-16,Business Continuity,Business continuity and disaster recovery plans are documented and tested.
+NCC-17,Vendor Management,Third-party vendors are assessed for security risk prior to engagement.
+NCC-18,Data Protection,A data classification policy defines handling requirements for sensitive data.
+NCC-19,Network Security,Network access is controlled via firewalls segmentation and intrusion detection.
+NCC-20,Application Security,Applications undergo security testing (SAST/DAST/penetration testing) before release.
