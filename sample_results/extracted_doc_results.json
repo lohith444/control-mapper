@@ -1,0 +1,72 @@
+{
+    "controls": [
+        {
+            "control_id": "DOC-1",
+            "text": "Centralized logging and monitoring services",
+            "domain": "Logging",
+            "specificity": "low"
+        },
+        {
+            "control_id": "DOC-2",
+            "text": "Encryption at rest using cloud provider–managed encryption mechanisms",
+            "domain": "Encryption",
+            "specificity": "low"
+        },
+        {
+            "control_id": "DOC-3",
+            "text": "Security incidents can be reported through defined channels",
+            "domain": "Incident Response",
+            "specificity": "low"
+        },
+        {
+            "control_id": "DOC-4",
+            "text": "9. Logical & Physical Access Controls (CC6)",
+            "domain": "Access Control",
+            "specificity": "low"
+        },
+        {
+            "control_id": "DOC-5",
+            "text": "Role-based access control is implemented for systems",
+            "domain": "Access Control",
+            "specificity": "low"
+        },
+        {
+            "control_id": "DOC-6",
+            "text": "Multi-factor authentication is required for privileged access",
+            "domain": "Access Control",
+            "specificity": "low"
+        },
+        {
+            "control_id": "DOC-7",
+            "text": "Access provisioning and deprovisioning procedures are documented",
+            "domain": "Access Control",
+            "specificity": "low"
+        },
+        {
+            "control_id": "DOC-8",
+            "text": "Incident response procedures are documented",
+            "domain": "Incident Response",
+            "specificity": "low"
+        },
+        {
+            "control_id": "DOC-9",
+            "text": "Security incidents are logged and tracked to resolution",
+            "domain": "Logging",
+            "specificity": "low"
+        },
+        {
+            "control_id": "DOC-10",
+            "text": "Backup procedures are documented and performed",
+            "domain": "Business Continuity",
+            "specificity": "low"
+        },
+        {
+            "control_id": "DOC-11",
+            "text": "Access to sensitive data is restricted based on roles",
+            "domain": "Access Control",
+            "specificity": "low"
+        }
+    ],
+    "source": "document",
+    "filename": "SOC 2® Type II Report (Hypothetical).docx"
+}

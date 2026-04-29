@@ -1,0 +1,557 @@
+{
+    "mappings": [
+        {
+            "source_control_ids": [
+                "TC-2"
+            ],
+            "base_control_ids": [
+                "CC 5.2, CC 6.1, CC 6.2, CC 6.3"
+            ],
+            "match_type": "partial",
+            "rationale": "Semantic similarity match (max cosine similarity: 0.74)",
+            "source_controls": [
+                {
+                    "control_id": "TC-2",
+                    "text": "Systematic controls are established in the access management policy for managing user access rights, ensuring appropriate, authorized access to systems and data.",
+                    "domain": "Access Control",
+                    "specificity": "low",
+                    "source": "trust_center"
+                }
+            ],
+            "base_controls": [
+                {
+                    "control_id": "CC 5.2, CC 6.1, CC 6.2, CC 6.3",
+                    "domain": "General",
+                    "text": "The company's access control policy documents the requirements for the following access control functions: \n- adding new users;\n- modifying users; and/or \n- removing an existing user's access."
+                }
+            ]
+        },
+        {
+            "source_control_ids": [
+                "TC-18"
+            ],
+            "base_control_ids": [
+                "CC 6.6, CC 6.7"
+            ],
+            "match_type": "partial",
+            "rationale": "Semantic similarity match (max cosine similarity: 0.70)",
+            "source_controls": [
+                {
+                    "control_id": "TC-18",
+                    "text": "All data is encrypted when transmitted over networks, both within the organization's internal network and external connections.",
+                    "domain": "Encryption",
+                    "specificity": "medium",
+                    "source": "trust_center"
+                }
+            ],
+            "base_controls": [
+                {
+                    "control_id": "CC 6.6, CC 6.7",
+                    "domain": "General",
+                    "text": "The company uses secure data transmission protocols to encrypt confidential and sensitive data when transmitted over public networks."
+                }
+            ]
+        },
+        {
+            "source_control_ids": [
+                "TC-21"
+            ],
+            "base_control_ids": [
+                "CC 6.1"
+            ],
+            "match_type": "partial",
+            "rationale": "Semantic similarity match (max cosine similarity: 0.74)",
+            "source_controls": [
+                {
+                    "control_id": "TC-21",
+                    "text": "All data is labeled based on its classification level. This ensures that appropriate access controls and handling procedures are applied to protect information.",
+                    "domain": "Access Control",
+                    "specificity": "low",
+                    "source": "trust_center"
+                }
+            ],
+            "base_controls": [
+                {
+                    "control_id": "CC 6.1",
+                    "domain": "General",
+                    "text": "The company has a data classification policy in place to help ensure that confidential data is properly secured and restricted to authorized personnel."
+                }
+            ]
+        },
+        {
+            "source_control_ids": [
+                "TC-22"
+            ],
+            "base_control_ids": [
+                "CC 5.3, CC 6.5"
+            ],
+            "match_type": "partial",
+            "rationale": "Semantic similarity match (max cosine similarity: 0.67)",
+            "source_controls": [
+                {
+                    "control_id": "TC-22",
+                    "text": "Data management and retention policy established",
+                    "domain": "Data Protection",
+                    "specificity": "low",
+                    "source": "trust_center"
+                }
+            ],
+            "base_controls": [
+                {
+                    "control_id": "CC 5.3, CC 6.5",
+                    "domain": "General",
+                    "text": "The company has formal retention and disposal procedures in place to guide the secure retention and disposal of company and customer data."
+                }
+            ]
+        },
+        {
+            "source_control_ids": [
+                "TC-23"
+            ],
+            "base_control_ids": [
+                "CC 5.3, CC 6.5"
+            ],
+            "match_type": "partial",
+            "rationale": "Semantic similarity match (max cosine similarity: 0.67)",
+            "source_controls": [
+                {
+                    "control_id": "TC-23",
+                    "text": "A data management and retention policy is established, outlining guidelines for how long data should be retained and how it should be managed throughout its lifecycle.",
+                    "domain": "Data Protection",
+                    "specificity": "low",
+                    "source": "trust_center"
+                }
+            ],
+            "base_controls": [
+                {
+                    "control_id": "CC 5.3, CC 6.5",
+                    "domain": "General",
+                    "text": "The company has formal retention and disposal procedures in place to guide the secure retention and disposal of company and customer data."
+                }
+            ]
+        },
+        {
+            "source_control_ids": [
+                "TC-33"
+            ],
+            "base_control_ids": [
+                "CC 6.7"
+            ],
+            "match_type": "partial",
+            "rationale": "Semantic similarity match (max cosine similarity: 0.68)",
+            "source_controls": [
+                {
+                    "control_id": "TC-33",
+                    "text": "Data stored on end-user devices (e.g., laptops, mobile devices) is encrypted to protect it in case of device loss or theft.",
+                    "domain": "Encryption",
+                    "specificity": "low",
+                    "source": "trust_center"
+                }
+            ],
+            "base_controls": [
+                {
+                    "control_id": "CC 6.7",
+                    "domain": "General",
+                    "text": "The company encrypts portable and removable media devices when used."
+                }
+            ]
+        },
+        {
+            "source_control_ids": [
+                "TC-34"
+            ],
+            "base_control_ids": [
+                "CC 6.7"
+            ],
+            "match_type": "full",
+            "rationale": "Semantic similarity match (max cosine similarity: 0.90)",
+            "source_controls": [
+                {
+                    "control_id": "TC-34",
+                    "text": "A mobile device management (MDM) solution is used to manage and secure end-user devices.",
+                    "domain": "General",
+                    "specificity": "low",
+                    "source": "trust_center"
+                }
+            ],
+            "base_controls": [
+                {
+                    "control_id": "CC 6.7",
+                    "domain": "General",
+                    "text": "The company encrypts portable and removable media devices when used."
+                }
+            ]
+        },
+        {
+            "source_control_ids": [
+                "TC-47"
+            ],
+            "base_control_ids": [
+                "CC 2.1, CC 7.2"
+            ],
+            "match_type": "partial",
+            "rationale": "Semantic similarity match (max cosine similarity: 0.67)",
+            "source_controls": [
+                {
+                    "control_id": "TC-47",
+                    "text": "Maintain a robust and up-to-date audit log management process. This process should include guidelines for capturing, storing, and monitoring audit logs, ensuring the availability and integrity of essential security event data.",
+                    "domain": "Logging",
+                    "specificity": "low",
+                    "source": "trust_center"
+                }
+            ],
+            "base_controls": [
+                {
+                    "control_id": "CC 2.1, CC 7.2",
+                    "domain": "General",
+                    "text": "The company utilizes a log management tool to identify events that may have a potential impact on the company's ability to achieve its security objectives."
+                }
+            ]
+        },
+        {
+            "source_control_ids": [
+                "TC-48"
+            ],
+            "base_control_ids": [
+                "CC 2.1, CC 7.2"
+            ],
+            "match_type": "partial",
+            "rationale": "Semantic similarity match (max cosine similarity: 0.66)",
+            "source_controls": [
+                {
+                    "control_id": "TC-48",
+                    "text": "Enable the collection of audit logs from critical systems and applications. Audit logs capture essential security events and activities, providing valuable information for incident detection, investigation, and compliance purposes.",
+                    "domain": "Logging",
+                    "specificity": "low",
+                    "source": "trust_center"
+                }
+            ],
+            "base_controls": [
+                {
+                    "control_id": "CC 2.1, CC 7.2",
+                    "domain": "General",
+                    "text": "The company utilizes a log management tool to identify events that may have a potential impact on the company's ability to achieve its security objectives."
+                }
+            ]
+        },
+        {
+            "source_control_ids": [
+                "TC-52"
+            ],
+            "base_control_ids": [
+                "CC 7.2"
+            ],
+            "match_type": "partial",
+            "rationale": "Semantic similarity match (max cosine similarity: 0.70)",
+            "source_controls": [
+                {
+                    "control_id": "TC-52",
+                    "text": "The performance of the organization's infrastructure components is monitored to detect potential issues or anomalies that may impact security or reliability.",
+                    "domain": "Monitoring",
+                    "specificity": "low",
+                    "source": "trust_center"
+                }
+            ],
+            "base_controls": [
+                {
+                    "control_id": "CC 7.2",
+                    "domain": "General",
+                    "text": "An infrastructure monitoring tool is utilized to monitor systems, infrastructure, and performance and generates alerts when specific predefined thresholds are met."
+                }
+            ]
+        },
+        {
+            "source_control_ids": [
+                "TC-53"
+            ],
+            "base_control_ids": [
+                "CC 2.1, CC 7.2"
+            ],
+            "match_type": "partial",
+            "rationale": "Semantic similarity match (max cosine similarity: 0.66)",
+            "source_controls": [
+                {
+                    "control_id": "TC-53",
+                    "text": "Implement a centralized log management solution to collect, store, and analyze logs from various systems and applications. Centralized log management simplifies log review, correlation, and monitoring for potential security incidents.",
+                    "domain": "Logging",
+                    "specificity": "low",
+                    "source": "trust_center"
+                }
+            ],
+            "base_controls": [
+                {
+                    "control_id": "CC 2.1, CC 7.2",
+                    "domain": "General",
+                    "text": "The company utilizes a log management tool to identify events that may have a potential impact on the company's ability to achieve its security objectives."
+                }
+            ]
+        },
+        {
+            "source_control_ids": [
+                "TC-64"
+            ],
+            "base_control_ids": [
+                "CC 6.1, CC 6.6",
+                "CC 6.1, CC 6.6"
+            ],
+            "match_type": "partial",
+            "rationale": "Semantic similarity match (max cosine similarity: 0.70)",
+            "source_controls": [
+                {
+                    "control_id": "TC-64",
+                    "text": "Physical access to the organization's facilities, equipment, and systems is restricted to authorized personnel only.",
+                    "domain": "Access Control",
+                    "specificity": "low",
+                    "source": "trust_center"
+                }
+            ],
+            "base_controls": [
+                {
+                    "control_id": "CC 6.1, CC 6.6",
+                    "domain": "General",
+                    "text": "The company's production systems can only be remotely accessed by authorized employees possessing a valid multi-factor authentication (MFA) method."
+                },
+                {
+                    "control_id": "CC 6.1, CC 6.6",
+                    "domain": "General",
+                    "text": "The company's production systems can only be remotely accessed by authorized employees possessing a valid multi-factor authentication (MFA) method."
+                }
+            ]
+        },
+        {
+            "source_control_ids": [
+                "TC-68"
+            ],
+            "base_control_ids": [
+                "CC 1.4, CC 2.2"
+            ],
+            "match_type": "partial",
+            "rationale": "Semantic similarity match (max cosine similarity: 0.71)",
+            "source_controls": [
+                {
+                    "control_id": "TC-68",
+                    "text": "Security awareness training is conducted annually for all employees, covering cybersecurity threats, social engineering, authentication best practices, and handling of sensitive data.",
+                    "domain": "Data Protection",
+                    "specificity": "medium",
+                    "source": "trust_center"
+                }
+            ],
+            "base_controls": [
+                {
+                    "control_id": "CC 1.4, CC 2.2",
+                    "domain": "General",
+                    "text": "The company requires employees to complete security awareness training within thirty days of hire and at least annually thereafter."
+                }
+            ]
+        },
+        {
+            "source_control_ids": [
+                "TC-73"
+            ],
+            "base_control_ids": [
+                "CC 3.1, CC 3.2, CC 3.3, CC 3.4, CC 5.1, CC 5.3, CC 9.1",
+                "CC 3.1, CC 5.3"
+            ],
+            "match_type": "partial",
+            "rationale": "Semantic similarity match (max cosine similarity: 0.74)",
+            "source_controls": [
+                {
+                    "control_id": "TC-73",
+                    "text": "A risk management policy is established that outlines the organization's approach to identifying, assessing, and mitigatin",
+                    "domain": "General",
+                    "specificity": "low",
+                    "source": "trust_center"
+                }
+            ],
+            "base_controls": [
+                {
+                    "control_id": "CC 3.1, CC 3.2, CC 3.3, CC 3.4, CC 5.1, CC 5.3, CC 9.1",
+                    "domain": "General",
+                    "text": "The company has a documented risk management program in place that includes guidance on the identification of potential threats, rating the significance of the risks associated with the identified threats, and mitigation strategies for those risks."
+                },
+                {
+                    "control_id": "CC 3.1, CC 5.3",
+                    "domain": "General",
+                    "text": "The company specifies its objectives to enable the identification and assessment of risk related to the objectives."
+                }
+            ]
+        },
+        {
+            "source_control_ids": [
+                "DOC-8"
+            ],
+            "base_control_ids": [
+                "CC 2.2, CC 5.3, CC 7.3, CC 7.4, CC 7.5"
+            ],
+            "match_type": "partial",
+            "rationale": "Semantic similarity match (max cosine similarity: 0.66)",
+            "source_controls": [
+                {
+                    "control_id": "DOC-8",
+                    "text": "Incident response procedures are documented",
+                    "domain": "Incident Response",
+                    "specificity": "low",
+                    "source": "document"
+                }
+            ],
+            "base_controls": [
+                {
+                    "control_id": "CC 2.2, CC 5.3, CC 7.3, CC 7.4, CC 7.5",
+                    "domain": "General",
+                    "text": "The company has security and privacy incident response policies and procedures that are documented and communicated to authorized users."
+                }
+            ]
+        },
+        {
+            "source_control_ids": [
+                "DOC-9"
+            ],
+            "base_control_ids": [
+                "CC 7.3, CC 7.4, CC 7.5"
+            ],
+            "match_type": "partial",
+            "rationale": "Semantic similarity match (max cosine similarity: 0.79)",
+            "source_controls": [
+                {
+                    "control_id": "DOC-9",
+                    "text": "Security incidents are logged and tracked to resolution",
+                    "domain": "Logging",
+                    "specificity": "low",
+                    "source": "document"
+                }
+            ],
+            "base_controls": [
+                {
+                    "control_id": "CC 7.3, CC 7.4, CC 7.5",
+                    "domain": "General",
+                    "text": "The company's security and privacy incidents are logged, tracked, resolved, and communicated to affected or relevant parties by management according to the company's security incident response policy and procedures."
+                }
+            ]
+        }
+    ],
+    "unmatched_source": [
+        "TC-1",
+        "TC-3",
+        "TC-4",
+        "TC-5",
+        "TC-6",
+        "TC-7",
+        "TC-8",
+        "TC-9",
+        "TC-10",
+        "TC-11",
+        "TC-12",
+        "TC-13",
+        "TC-14",
+        "TC-15",
+        "TC-16",
+        "TC-17",
+        "TC-19",
+        "TC-20",
+        "TC-24",
+        "TC-25",
+        "TC-26",
+        "TC-27",
+        "TC-28",
+        "TC-29",
+        "TC-30",
+        "TC-31",
+        "TC-32",
+        "TC-35",
+        "TC-36",
+        "TC-37",
+        "TC-38",
+        "TC-39",
+        "TC-40",
+        "TC-41",
+        "TC-42",
+        "TC-43",
+        "TC-44",
+        "TC-45",
+        "TC-46",
+        "TC-49",
+        "TC-50",
+        "TC-51",
+        "TC-54",
+        "TC-55",
+        "TC-56",
+        "TC-57",
+        "TC-58",
+        "TC-59",
+        "TC-60",
+        "TC-61",
+        "TC-62",
+        "TC-63",
+        "TC-65",
+        "TC-66",
+        "TC-67",
+        "TC-69",
+        "TC-70",
+        "TC-71",
+        "TC-72",
+        "DOC-1",
+        "DOC-2",
+        "DOC-3",
+        "DOC-4",
+        "DOC-5",
+        "DOC-6",
+        "DOC-7",
+        "DOC-10",
+        "DOC-11"
+    ],
+    "unmatched_base": [
+        "CC 1.1, CC 1.4",
+        "CC 1.1",
+        "CC 1.1, CC 1.5",
+        "CC 1.1",
+        "CC 1.1",
+        "CC 1.1, CC 1.4, CC 1.5",
+        "CC 1.2, CC 1.3",
+        "CC 1.2",
+        "CC 1.3, CC 2.2",
+        "CC 2.1, CC 4.1, CC 7.1, CC 7.2, CC 7.4, CC 8.1",
+        "CC 2.1, CC 4.1, CC 4.2",
+        "CC 2.2, CC 5.1, CC 5.2, CC 5.3",
+        "CC 2.3",
+        "CC 2.3",
+        "CC 2.3, CC 9.2",
+        "CC 3.2, CC 4.1, CC 4.2, CC 5.3, CC 9.2",
+        "CC 3.2, CC 7.5",
+        "CC 3.2, CC 3.3, CC 3.4, CC 7.1, CC 9.1",
+        "CC 5.2, CC 5.3, CC 6.8, CC 8.1",
+        "CC 5.3",
+        "CC 5.3, CC 7.1, CC 8.1",
+        "CC 6.2, CC 6.3, CC 6.5",
+        "CC 6.2, CC 6.3, CC 6.4",
+        "CC 6.5",
+        "CC 6.5",
+        "CC 6.6, CC 6.8, CC 7.2, CC 7.4, CC 8.1",
+        "CC 6.6, CC 7.2,",
+        "CC 6.6",
+        "CC 6.8",
+        "CC 7.1, CC 7.2",
+        "CC 7.4, CC 7.5",
+        "CC 9.1",
+        "CC 6.4"
+    ],
+    "domains": [
+        "Access Control",
+        "Business Continuity",
+        "Data Protection",
+        "Encryption",
+        "General",
+        "Incident Response",
+        "Logging",
+        "Monitoring",
+        "Network Security"
+    ],
+    "stats": {
+        "total_source": 84,
+        "total_base": 51,
+        "matched_source": 16,
+        "matched_base": 13,
+        "full_matches": 1,
+        "partial_matches": 15,
+        "coverage_pct": 25.5
+    }
+}

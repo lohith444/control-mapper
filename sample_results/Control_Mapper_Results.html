@@ -1,0 +1,1122 @@
+<html lang="en"><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Control Mapper</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&amp;family=Syne:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <script defer="" src="/static/js/bundle.js"></script><style>:root {
+  --bg: #0a0b0f;
+  --surface: #12141a;
+  --surface2: #1a1d26;
+  --surface3: #222536;
+  --border: #2a2e40;
+  --border2: #353a52;
+  --accent: #6c7dff;
+  --accent2: #4ade80;
+  --accent3: #fb923c;
+  --accent4: #f472b6;
+  --text: #e8eaf6;
+  --text2: #9399b8;
+  --text3: #5c6280;
+  --full: #4ade80;
+  --partial: #fb923c;
+  --unmatched: #f87171;
+  --font-display: 'Syne', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body, #root {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--surface); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+button {
+  font-family: var(--font-mono);
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+input, textarea {
+  font-family: var(--font-mono);
+  outline: none;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.badge-full { background: rgba(74, 222, 128, 0.15); color: var(--full); border: 1px solid rgba(74, 222, 128, 0.3); }
+.badge-partial { background: rgba(251, 146, 60, 0.15); color: var(--partial); border: 1px solid rgba(251, 146, 60, 0.3); }
+.badge-unmatched { background: rgba(248, 113, 113, 0.15); color: var(--unmatched); border: 1px solid rgba(248, 113, 113, 0.3); }
+.badge-tc { background: rgba(108, 125, 255, 0.15); color: var(--accent); border: 1px solid rgba(108, 125, 255, 0.3); }
+.badge-doc { background: rgba(244, 114, 182, 0.15); color: var(--accent4); border: 1px solid rgba(244, 114, 182, 0.3); }
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(108, 125, 255, 0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(108, 125, 255, 0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.fade-in { animation: fadeIn 0.3s ease forwards; }
+
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8uL3NyYy9pbmRleC5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSxhQUFhO0VBQ2Isa0JBQWtCO0VBQ2xCLG1CQUFtQjtFQUNuQixtQkFBbUI7RUFDbkIsaUJBQWlCO0VBQ2pCLGtCQUFrQjtFQUNsQixpQkFBaUI7RUFDakIsa0JBQWtCO0VBQ2xCLGtCQUFrQjtFQUNsQixrQkFBa0I7RUFDbEIsZUFBZTtFQUNmLGdCQUFnQjtFQUNoQixnQkFBZ0I7RUFDaEIsZUFBZTtFQUNmLGtCQUFrQjtFQUNsQixvQkFBb0I7RUFDcEIsa0NBQWtDO0VBQ2xDLGlDQUFpQztBQUNuQzs7QUFFQSxJQUFJLHNCQUFzQixFQUFFLFNBQVMsRUFBRSxVQUFVLEVBQUU7O0FBRW5EO0VBQ0UsWUFBWTtFQUNaLHFCQUFxQjtFQUNyQixrQkFBa0I7RUFDbEIsNkJBQTZCO0VBQzdCLGVBQWU7RUFDZixnQkFBZ0I7RUFDaEIsbUNBQW1DO0FBQ3JDOztBQUVBLHNCQUFzQixVQUFVLEVBQUUsV0FBVyxFQUFFO0FBQy9DLDRCQUE0QiwwQkFBMEIsRUFBRTtBQUN4RCw0QkFBNEIsMEJBQTBCLEVBQUUsa0JBQWtCLEVBQUU7QUFDNUUsa0NBQWtDLHlCQUF5QixFQUFFOztBQUU3RDtFQUNFLDZCQUE2QjtFQUM3QixlQUFlO0VBQ2YsWUFBWTtFQUNaLGFBQWE7QUFDZjs7QUFFQTtFQUNFLDZCQUE2QjtFQUM3QixhQUFhO0FBQ2Y7O0FBRUE7RUFDRSxvQkFBb0I7RUFDcEIsbUJBQW1CO0VBQ25CLFFBQVE7RUFDUixnQkFBZ0I7RUFDaEIsa0JBQWtCO0VBQ2xCLGVBQWU7RUFDZixnQkFBZ0I7RUFDaEIsc0JBQXNCO0VBQ3RCLHlCQUF5QjtBQUMzQjs7QUFFQSxjQUFjLG9DQUFvQyxFQUFFLGtCQUFrQixFQUFFLHlDQUF5QyxFQUFFO0FBQ25ILGlCQUFpQixvQ0FBb0MsRUFBRSxxQkFBcUIsRUFBRSx5Q0FBeUMsRUFBRTtBQUN6SCxtQkFBbUIscUNBQXFDLEVBQUUsdUJBQXVCLEVBQUUsMENBQTBDLEVBQUU7QUFDL0gsWUFBWSxxQ0FBcUMsRUFBRSxvQkFBb0IsRUFBRSwwQ0FBMEMsRUFBRTtBQUNySCxhQUFhLHFDQUFxQyxFQUFFLHFCQUFxQixFQUFFLDBDQUEwQyxFQUFFOztBQUV2SDtFQUNFLFdBQVcsNENBQTRDLEVBQUU7RUFDekQsTUFBTSw0Q0FBNEMsRUFBRTtBQUN0RDs7QUFFQTtFQUNFLE9BQU8sVUFBVSxFQUFFLDBCQUEwQixFQUFFO0VBQy9DLEtBQUssVUFBVSxFQUFFLHdCQUF3QixFQUFFO0FBQzdDOztBQUVBO0VBQ0UsS0FBSyx5QkFBeUIsRUFBRTtBQUNsQzs7QUFFQSxXQUFXLG9DQUFvQyxFQUFFIiwic291cmNlc0NvbnRlbnQiOlsiOnJvb3Qge1xuICAtLWJnOiAjMGEwYjBmO1xuICAtLXN1cmZhY2U6ICMxMjE0MWE7XG4gIC0tc3VyZmFjZTI6ICMxYTFkMjY7XG4gIC0tc3VyZmFjZTM6ICMyMjI1MzY7XG4gIC0tYm9yZGVyOiAjMmEyZTQwO1xuICAtLWJvcmRlcjI6ICMzNTNhNTI7XG4gIC0tYWNjZW50OiAjNmM3ZGZmO1xuICAtLWFjY2VudDI6ICM0YWRlODA7XG4gIC0tYWNjZW50MzogI2ZiOTIzYztcbiAgLS1hY2NlbnQ0OiAjZjQ3MmI2O1xuICAtLXRleHQ6ICNlOGVhZjY7XG4gIC0tdGV4dDI6ICM5Mzk5Yjg7XG4gIC0tdGV4dDM6ICM1YzYyODA7XG4gIC0tZnVsbDogIzRhZGU4MDtcbiAgLS1wYXJ0aWFsOiAjZmI5MjNjO1xuICAtLXVubWF0Y2hlZDogI2Y4NzE3MTtcbiAgLS1mb250LWRpc3BsYXk6ICdTeW5lJywgc2Fucy1zZXJpZjtcbiAgLS1mb250LW1vbm86ICdETSBNb25vJywgbW9ub3NwYWNlO1xufVxuXG4qIHsgYm94LXNpemluZzogYm9yZGVyLWJveDsgbWFyZ2luOiAwOyBwYWRkaW5nOiAwOyB9XG5cbmh0bWwsIGJvZHksICNyb290IHtcbiAgaGVpZ2h0OiAxMDAlO1xuICBiYWNrZ3JvdW5kOiB2YXIoLS1iZyk7XG4gIGNvbG9yOiB2YXIoLS10ZXh0KTtcbiAgZm9udC1mYW1pbHk6IHZhcigtLWZvbnQtbW9ubyk7XG4gIGZvbnQtc2l6ZTogMTRweDtcbiAgbGluZS1oZWlnaHQ6IDEuNjtcbiAgLXdlYmtpdC1mb250LXNtb290aGluZzogYW50aWFsaWFzZWQ7XG59XG5cbjo6LXdlYmtpdC1zY3JvbGxiYXIgeyB3aWR0aDogNnB4OyBoZWlnaHQ6IDZweDsgfVxuOjotd2Via2l0LXNjcm9sbGJhci10cmFjayB7IGJhY2tncm91bmQ6IHZhcigtLXN1cmZhY2UpOyB9XG46Oi13ZWJraXQtc2Nyb2xsYmFyLXRodW1iIHsgYmFja2dyb3VuZDogdmFyKC0tYm9yZGVyMik7IGJvcmRlci1yYWRpdXM6IDNweDsgfVxuOjotd2Via2l0LXNjcm9sbGJhci10aHVtYjpob3ZlciB7IGJhY2tncm91bmQ6IHZhcigtLWFjY2VudCk7IH1cblxuYnV0dG9uIHtcbiAgZm9udC1mYW1pbHk6IHZhcigtLWZvbnQtbW9ubyk7XG4gIGN1cnNvcjogcG9pbnRlcjtcbiAgYm9yZGVyOiBub25lO1xuICBvdXRsaW5lOiBub25lO1xufVxuXG5pbnB1dCwgdGV4dGFyZWEge1xuICBmb250LWZhbWlseTogdmFyKC0tZm9udC1tb25vKTtcbiAgb3V0bGluZTogbm9uZTtcbn1cblxuLmJhZGdlIHtcbiAgZGlzcGxheTogaW5saW5lLWZsZXg7XG4gIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gIGdhcDogNHB4O1xuICBwYWRkaW5nOiAycHggOHB4O1xuICBib3JkZXItcmFkaXVzOiA0cHg7XG4gIGZvbnQtc2l6ZTogMTFweDtcbiAgZm9udC13ZWlnaHQ6IDUwMDtcbiAgbGV0dGVyLXNwYWNpbmc6IDAuMDVlbTtcbiAgdGV4dC10cmFuc2Zvcm06IHVwcGVyY2FzZTtcbn1cblxuLmJhZGdlLWZ1bGwgeyBiYWNrZ3JvdW5kOiByZ2JhKDc0LCAyMjIsIDEyOCwgMC4xNSk7IGNvbG9yOiB2YXIoLS1mdWxsKTsgYm9yZGVyOiAxcHggc29saWQgcmdiYSg3NCwgMjIyLCAxMjgsIDAuMyk7IH1cbi5iYWRnZS1wYXJ0aWFsIHsgYmFja2dyb3VuZDogcmdiYSgyNTEsIDE0NiwgNjAsIDAuMTUpOyBjb2xvcjogdmFyKC0tcGFydGlhbCk7IGJvcmRlcjogMXB4IHNvbGlkIHJnYmEoMjUxLCAxNDYsIDYwLCAwLjMpOyB9XG4uYmFkZ2UtdW5tYXRjaGVkIHsgYmFja2dyb3VuZDogcmdiYSgyNDgsIDExMywgMTEzLCAwLjE1KTsgY29sb3I6IHZhcigtLXVubWF0Y2hlZCk7IGJvcmRlcjogMXB4IHNvbGlkIHJnYmEoMjQ4LCAxMTMsIDExMywgMC4zKTsgfVxuLmJhZGdlLXRjIHsgYmFja2dyb3VuZDogcmdiYSgxMDgsIDEyNSwgMjU1LCAwLjE1KTsgY29sb3I6IHZhcigtLWFjY2VudCk7IGJvcmRlcjogMXB4IHNvbGlkIHJnYmEoMTA4LCAxMjUsIDI1NSwgMC4zKTsgfVxuLmJhZGdlLWRvYyB7IGJhY2tncm91bmQ6IHJnYmEoMjQ0LCAxMTQsIDE4MiwgMC4xNSk7IGNvbG9yOiB2YXIoLS1hY2NlbnQ0KTsgYm9yZGVyOiAxcHggc29saWQgcmdiYSgyNDQsIDExNCwgMTgyLCAwLjMpOyB9XG5cbkBrZXlmcmFtZXMgcHVsc2UtZ2xvdyB7XG4gIDAlLCAxMDAlIHsgYm94LXNoYWRvdzogMCAwIDAgMCByZ2JhKDEwOCwgMTI1LCAyNTUsIDAuNCk7IH1cbiAgNTAlIHsgYm94LXNoYWRvdzogMCAwIDAgOHB4IHJnYmEoMTA4LCAxMjUsIDI1NSwgMCk7IH1cbn1cblxuQGtleWZyYW1lcyBmYWRlSW4ge1xuICBmcm9tIHsgb3BhY2l0eTogMDsgdHJhbnNmb3JtOiB0cmFuc2xhdGVZKDhweCk7IH1cbiAgdG8geyBvcGFjaXR5OiAxOyB0cmFuc2Zvcm06IHRyYW5zbGF0ZVkoMCk7IH1cbn1cblxuQGtleWZyYW1lcyBzcGluIHtcbiAgdG8geyB0cmFuc2Zvcm06IHJvdGF0ZSgzNjBkZWcpOyB9XG59XG5cbi5mYWRlLWluIHsgYW5pbWF0aW9uOiBmYWRlSW4gMC4zcyBlYXNlIGZvcndhcmRzOyB9XG4iXSwic291cmNlUm9vdCI6IiJ9 */</style><style>.header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(12px);
+}
+
+.header-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 24px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-icon {
+  width: 30px;
+  height: 30px;
+  background: linear-gradient(135deg, var(--accent), #8b5cf6);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+
+.brand-name {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: 0.02em;
+}
+
+.brand-tag {
+  font-size: 10px;
+  color: var(--text3);
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.nav-tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  color: var(--text2);
+  background: transparent;
+  border: 1px solid transparent;
+  transition: all 0.15s ease;
+  font-family: var(--font-mono);
+}
+
+.nav-tab:hover {
+  color: var(--text);
+  background: var(--surface2);
+}
+
+.nav-tab.active {
+  color: var(--accent);
+  background: rgba(108, 125, 255, 0.1);
+  border-color: rgba(108, 125, 255, 0.25);
+}
+
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8uL3NyYy9jb21wb25lbnRzL0hlYWRlci5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSwwQkFBMEI7RUFDMUIsc0NBQXNDO0VBQ3RDLGdCQUFnQjtFQUNoQixNQUFNO0VBQ04sWUFBWTtFQUNaLDJCQUEyQjtBQUM3Qjs7QUFFQTtFQUNFLGlCQUFpQjtFQUNqQixjQUFjO0VBQ2QsZUFBZTtFQUNmLFlBQVk7RUFDWixhQUFhO0VBQ2IsbUJBQW1CO0VBQ25CLDhCQUE4QjtBQUNoQzs7QUFFQTtFQUNFLGFBQWE7RUFDYixtQkFBbUI7RUFDbkIsU0FBUztBQUNYOztBQUVBO0VBQ0UsV0FBVztFQUNYLFlBQVk7RUFDWiwyREFBMkQ7RUFDM0Qsa0JBQWtCO0VBQ2xCLGFBQWE7RUFDYixtQkFBbUI7RUFDbkIsdUJBQXVCO0VBQ3ZCLFdBQVc7QUFDYjs7QUFFQTtFQUNFLGdDQUFnQztFQUNoQyxlQUFlO0VBQ2YsZ0JBQWdCO0VBQ2hCLGtCQUFrQjtFQUNsQixzQkFBc0I7QUFDeEI7O0FBRUE7RUFDRSxlQUFlO0VBQ2YsbUJBQW1CO0VBQ25CLDJCQUEyQjtFQUMzQiwrQkFBK0I7RUFDL0IsZ0JBQWdCO0VBQ2hCLGtCQUFrQjtBQUNwQjs7QUFFQTtFQUNFLGFBQWE7RUFDYixtQkFBbUI7RUFDbkIsUUFBUTtBQUNWOztBQUVBO0VBQ0UsYUFBYTtFQUNiLG1CQUFtQjtFQUNuQixRQUFRO0VBQ1IsaUJBQWlCO0VBQ2pCLGtCQUFrQjtFQUNsQixlQUFlO0VBQ2YsbUJBQW1CO0VBQ25CLHVCQUF1QjtFQUN2Qiw2QkFBNkI7RUFDN0IsMEJBQTBCO0VBQzFCLDZCQUE2QjtBQUMvQjs7QUFFQTtFQUNFLGtCQUFrQjtFQUNsQiwyQkFBMkI7QUFDN0I7O0FBRUE7RUFDRSxvQkFBb0I7RUFDcEIsb0NBQW9DO0VBQ3BDLHVDQUF1QztBQUN6QyIsInNvdXJjZXNDb250ZW50IjpbIi5oZWFkZXIge1xuICBiYWNrZ3JvdW5kOiB2YXIoLS1zdXJmYWNlKTtcbiAgYm9yZGVyLWJvdHRvbTogMXB4IHNvbGlkIHZhcigtLWJvcmRlcik7XG4gIHBvc2l0aW9uOiBzdGlja3k7XG4gIHRvcDogMDtcbiAgei1pbmRleDogMTAwO1xuICBiYWNrZHJvcC1maWx0ZXI6IGJsdXIoMTJweCk7XG59XG5cbi5oZWFkZXItaW5uZXIge1xuICBtYXgtd2lkdGg6IDE0MDBweDtcbiAgbWFyZ2luOiAwIGF1dG87XG4gIHBhZGRpbmc6IDAgMjRweDtcbiAgaGVpZ2h0OiA1NnB4O1xuICBkaXNwbGF5OiBmbGV4O1xuICBhbGlnbi1pdGVtczogY2VudGVyO1xuICBqdXN0aWZ5LWNvbnRlbnQ6IHNwYWNlLWJldHdlZW47XG59XG5cbi5oZWFkZXItYnJhbmQge1xuICBkaXNwbGF5OiBmbGV4O1xuICBhbGlnbi1pdGVtczogY2VudGVyO1xuICBnYXA6IDEwcHg7XG59XG5cbi5icmFuZC1pY29uIHtcbiAgd2lkdGg6IDMwcHg7XG4gIGhlaWdodDogMzBweDtcbiAgYmFja2dyb3VuZDogbGluZWFyLWdyYWRpZW50KDEzNWRlZywgdmFyKC0tYWNjZW50KSwgIzhiNWNmNik7XG4gIGJvcmRlci1yYWRpdXM6IDhweDtcbiAgZGlzcGxheTogZmxleDtcbiAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7XG4gIGNvbG9yOiAjZmZmO1xufVxuXG4uYnJhbmQtbmFtZSB7XG4gIGZvbnQtZmFtaWx5OiB2YXIoLS1mb250LWRpc3BsYXkpO1xuICBmb250LXNpemU6IDE2cHg7XG4gIGZvbnQtd2VpZ2h0OiA3MDA7XG4gIGNvbG9yOiB2YXIoLS10ZXh0KTtcbiAgbGV0dGVyLXNwYWNpbmc6IDAuMDJlbTtcbn1cblxuLmJyYW5kLXRhZyB7XG4gIGZvbnQtc2l6ZTogMTBweDtcbiAgY29sb3I6IHZhcigtLXRleHQzKTtcbiAgYmFja2dyb3VuZDogdmFyKC0tc3VyZmFjZTIpO1xuICBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1ib3JkZXIpO1xuICBwYWRkaW5nOiAxcHggNnB4O1xuICBib3JkZXItcmFkaXVzOiA0cHg7XG59XG5cbi5oZWFkZXItbmF2IHtcbiAgZGlzcGxheTogZmxleDtcbiAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAgZ2FwOiA0cHg7XG59XG5cbi5uYXYtdGFiIHtcbiAgZGlzcGxheTogZmxleDtcbiAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAgZ2FwOiA2cHg7XG4gIHBhZGRpbmc6IDZweCAxNHB4O1xuICBib3JkZXItcmFkaXVzOiA2cHg7XG4gIGZvbnQtc2l6ZTogMTNweDtcbiAgY29sb3I6IHZhcigtLXRleHQyKTtcbiAgYmFja2dyb3VuZDogdHJhbnNwYXJlbnQ7XG4gIGJvcmRlcjogMXB4IHNvbGlkIHRyYW5zcGFyZW50O1xuICB0cmFuc2l0aW9uOiBhbGwgMC4xNXMgZWFzZTtcbiAgZm9udC1mYW1pbHk6IHZhcigtLWZvbnQtbW9ubyk7XG59XG5cbi5uYXYtdGFiOmhvdmVyIHtcbiAgY29sb3I6IHZhcigtLXRleHQpO1xuICBiYWNrZ3JvdW5kOiB2YXIoLS1zdXJmYWNlMik7XG59XG5cbi5uYXYtdGFiLmFjdGl2ZSB7XG4gIGNvbG9yOiB2YXIoLS1hY2NlbnQpO1xuICBiYWNrZ3JvdW5kOiByZ2JhKDEwOCwgMTI1LCAyNTUsIDAuMSk7XG4gIGJvcmRlci1jb2xvcjogcmdiYSgxMDgsIDEyNSwgMjU1LCAwLjI1KTtcbn1cbiJdLCJzb3VyY2VSb290IjoiIn0= */</style><style>.ingest-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.ingest-intro {
+  text-align: center;
+  padding: 16px 0;
+}
+
+.ingest-title {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
+}
+
+.ingest-subtitle {
+  color: var(--text2);
+  font-size: 14px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.ingest-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 900px) {
+  .ingest-grid { grid-template-columns: 1fr; }
+}
+
+.ingest-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+.ingest-card:hover {
+  border-color: var(--border2);
+}
+
+.ingest-card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface2);
+}
+
+.step-num {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+}
+
+.step-icon { color: var(--text2); }
+.step-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  flex: 1 1;
+}
+
+.status-done { color: var(--full); margin-left: auto; }
+
+.ingest-card-body {
+  padding: 20px;
+  flex: 1 1;
+}
+
+.ingest-card-footer {
+  padding: 16px 20px;
+  border-top: 1px solid var(--border);
+  background: var(--surface2);
+}
+
+.dropzone {
+  border: 1.5px dashed var(--border2);
+  border-radius: 8px;
+  padding: 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  background: var(--surface2);
+}
+
+.dropzone:hover, .dropzone.drag {
+  border-color: var(--accent);
+  background: rgba(108, 125, 255, 0.05);
+}
+
+.dropzone.has-file {
+  border-style: solid;
+  border-color: var(--border2);
+}
+
+.dropzone-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: var(--text3);
+  font-size: 12px;
+}
+
+.dropzone-empty svg { color: var(--text3); }
+
+.dropzone-file {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text2);
+  font-size: 12px;
+  justify-content: center;
+}
+
+.remove-file {
+  background: var(--surface3);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text2);
+  padding: 2px 4px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.remove-file:hover { color: var(--unmatched); }
+
+.toggle-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.toggle-btn {
+  flex: 1 1;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text2);
+  font-family: var(--font-mono);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.toggle-btn.active {
+  background: rgba(108, 125, 255, 0.12);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.sample-controls-info {
+  margin-top: 16px;
+}
+
+.sample-domains {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.domain-chip {
+  padding: 3px 10px;
+  background: var(--surface3);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-size: 11px;
+  color: var(--text2);
+}
+
+.run-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.btn-run {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 36px;
+  background: linear-gradient(135deg, var(--accent), #8b5cf6);
+  color: #fff;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: var(--font-display);
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 20px rgba(108, 125, 255, 0.3);
+}
+
+.btn-run:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(108, 125, 255, 0.45);
+}
+
+.btn-run:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.run-hint {
+  font-size: 12px;
+  color: var(--text3);
+}
+
+.mt-12 { margin-top: 12px; }
+.mb-16 { margin-bottom: 16px; }
+
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8uL3NyYy9jb21wb25lbnRzL0luZ2VzdFBhbmVsLmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFLGFBQWE7RUFDYixzQkFBc0I7RUFDdEIsU0FBUztBQUNYOztBQUVBO0VBQ0Usa0JBQWtCO0VBQ2xCLGVBQWU7QUFDakI7O0FBRUE7RUFDRSxnQ0FBZ0M7RUFDaEMsZUFBZTtFQUNmLGdCQUFnQjtFQUNoQixrQkFBa0I7RUFDbEIsaUJBQWlCO0VBQ2pCLHVCQUF1QjtFQUN2QixtQkFBbUI7QUFDckI7O0FBRUE7RUFDRSxtQkFBbUI7RUFDbkIsZUFBZTtFQUNmLGdCQUFnQjtFQUNoQixjQUFjO0FBQ2hCOztBQUVBO0VBQ0UsYUFBYTtFQUNiLHFDQUFxQztFQUNyQyxTQUFTO0FBQ1g7O0FBRUE7RUFDRSxlQUFlLDBCQUEwQixFQUFFO0FBQzdDOztBQUVBO0VBQ0UsMEJBQTBCO0VBQzFCLCtCQUErQjtFQUMvQixtQkFBbUI7RUFDbkIsYUFBYTtFQUNiLHNCQUFzQjtFQUN0QixnQkFBZ0I7RUFDaEIsNkJBQTZCO0FBQy9COztBQUVBO0VBQ0UsNEJBQTRCO0FBQzlCOztBQUVBO0VBQ0UsYUFBYTtFQUNiLG1CQUFtQjtFQUNuQixRQUFRO0VBQ1Isa0JBQWtCO0VBQ2xCLHNDQUFzQztFQUN0QywyQkFBMkI7QUFDN0I7O0FBRUE7RUFDRSxnQ0FBZ0M7RUFDaEMsZUFBZTtFQUNmLGdCQUFnQjtFQUNoQixvQkFBb0I7RUFDcEIscUJBQXFCO0FBQ3ZCOztBQUVBLGFBQWEsbUJBQW1CLEVBQUU7QUFDbEM7RUFDRSxlQUFlO0VBQ2YsZ0JBQWdCO0VBQ2hCLGtCQUFrQjtFQUNsQixTQUFPO0FBQ1Q7O0FBRUEsZUFBZSxrQkFBa0IsRUFBRSxpQkFBaUIsRUFBRTs7QUFFdEQ7RUFDRSxhQUFhO0VBQ2IsU0FBTztBQUNUOztBQUVBO0VBQ0Usa0JBQWtCO0VBQ2xCLG1DQUFtQztFQUNuQywyQkFBMkI7QUFDN0I7O0FBRUE7RUFDRSxtQ0FBbUM7RUFDbkMsa0JBQWtCO0VBQ2xCLGFBQWE7RUFDYixrQkFBa0I7RUFDbEIsZUFBZTtFQUNmLDBCQUEwQjtFQUMxQiwyQkFBMkI7QUFDN0I7O0FBRUE7RUFDRSwyQkFBMkI7RUFDM0IscUNBQXFDO0FBQ3ZDOztBQUVBO0VBQ0UsbUJBQW1CO0VBQ25CLDRCQUE0QjtBQUM5Qjs7QUFFQTtFQUNFLGFBQWE7RUFDYixzQkFBc0I7RUFDdEIsbUJBQW1CO0VBQ25CLFFBQVE7RUFDUixtQkFBbUI7RUFDbkIsZUFBZTtBQUNqQjs7QUFFQSxzQkFBc0IsbUJBQW1CLEVBQUU7O0FBRTNDO0VBQ0UsYUFBYTtFQUNiLG1CQUFtQjtFQUNuQixRQUFRO0VBQ1IsbUJBQW1CO0VBQ25CLGVBQWU7RUFDZix1QkFBdUI7QUFDekI7O0FBRUE7RUFDRSwyQkFBMkI7RUFDM0IsK0JBQStCO0VBQy9CLGtCQUFrQjtFQUNsQixtQkFBbUI7RUFDbkIsZ0JBQWdCO0VBQ2hCLGFBQWE7RUFDYixtQkFBbUI7RUFDbkIsZUFBZTtBQUNqQjs7QUFFQSxxQkFBcUIsdUJBQXVCLEVBQUU7O0FBRTlDO0VBQ0UsYUFBYTtFQUNiLFFBQVE7RUFDUixrQkFBa0I7QUFDcEI7O0FBRUE7RUFDRSxTQUFPO0VBQ1AsaUJBQWlCO0VBQ2pCLGtCQUFrQjtFQUNsQixlQUFlO0VBQ2YsMkJBQTJCO0VBQzNCLCtCQUErQjtFQUMvQixtQkFBbUI7RUFDbkIsNkJBQTZCO0VBQzdCLGVBQWU7RUFDZixxQkFBcUI7QUFDdkI7O0FBRUE7RUFDRSxxQ0FBcUM7RUFDckMsMkJBQTJCO0VBQzNCLG9CQUFvQjtBQUN0Qjs7QUFFQTtFQUNFLGdCQUFnQjtBQUNsQjs7QUFFQTtFQUNFLGFBQWE7RUFDYixlQUFlO0VBQ2YsUUFBUTtBQUNWOztBQUVBO0VBQ0UsaUJBQWlCO0VBQ2pCLDJCQUEyQjtFQUMzQiwrQkFBK0I7RUFDL0IsbUJBQW1CO0VBQ25CLGVBQWU7RUFDZixtQkFBbUI7QUFDckI7O0FBRUE7RUFDRSxhQUFhO0VBQ2Isc0JBQXNCO0VBQ3RCLG1CQUFtQjtFQUNuQixTQUFTO0FBQ1g7O0FBRUE7RUFDRSxvQkFBb0I7RUFDcEIsbUJBQW1CO0VBQ25CLFNBQVM7RUFDVCxrQkFBa0I7RUFDbEIsMkRBQTJEO0VBQzNELFdBQVc7RUFDWCxtQkFBbUI7RUFDbkIsZUFBZTtFQUNmLGdCQUFnQjtFQUNoQixnQ0FBZ0M7RUFDaEMsc0JBQXNCO0VBQ3RCLGVBQWU7RUFDZixZQUFZO0VBQ1oseUJBQXlCO0VBQ3pCLCtDQUErQztBQUNqRDs7QUFFQTtFQUNFLDJCQUEyQjtFQUMzQixnREFBZ0Q7QUFDbEQ7O0FBRUE7RUFDRSxZQUFZO0VBQ1osbUJBQW1CO0VBQ25CLGVBQWU7RUFDZixnQkFBZ0I7QUFDbEI7O0FBRUE7RUFDRSxlQUFlO0VBQ2YsbUJBQW1CO0FBQ3JCOztBQUVBLFNBQVMsZ0JBQWdCLEVBQUU7QUFDM0IsU0FBUyxtQkFBbUIsRUFBRSIsInNvdXJjZXNDb250ZW50IjpbIi5pbmdlc3QtbGF5b3V0IHtcbiAgZGlzcGxheTogZmxleDtcbiAgZmxleC1kaXJlY3Rpb246IGNvbHVtbjtcbiAgZ2FwOiAzMnB4O1xufVxuXG4uaW5nZXN0LWludHJvIHtcbiAgdGV4dC1hbGlnbjogY2VudGVyO1xuICBwYWRkaW5nOiAxNnB4IDA7XG59XG5cbi5pbmdlc3QtdGl0bGUge1xuICBmb250LWZhbWlseTogdmFyKC0tZm9udC1kaXNwbGF5KTtcbiAgZm9udC1zaXplOiAzMnB4O1xuICBmb250LXdlaWdodDogODAwO1xuICBjb2xvcjogdmFyKC0tdGV4dCk7XG4gIGxpbmUtaGVpZ2h0OiAxLjE1O1xuICBsZXR0ZXItc3BhY2luZzogLTAuMDJlbTtcbiAgbWFyZ2luLWJvdHRvbTogMTJweDtcbn1cblxuLmluZ2VzdC1zdWJ0aXRsZSB7XG4gIGNvbG9yOiB2YXIoLS10ZXh0Mik7XG4gIGZvbnQtc2l6ZTogMTRweDtcbiAgbWF4LXdpZHRoOiA1MDBweDtcbiAgbWFyZ2luOiAwIGF1dG87XG59XG5cbi5pbmdlc3QtZ3JpZCB7XG4gIGRpc3BsYXk6IGdyaWQ7XG4gIGdyaWQtdGVtcGxhdGUtY29sdW1uczogcmVwZWF0KDMsIDFmcik7XG4gIGdhcDogMTZweDtcbn1cblxuQG1lZGlhIChtYXgtd2lkdGg6IDkwMHB4KSB7XG4gIC5pbmdlc3QtZ3JpZCB7IGdyaWQtdGVtcGxhdGUtY29sdW1uczogMWZyOyB9XG59XG5cbi5pbmdlc3QtY2FyZCB7XG4gIGJhY2tncm91bmQ6IHZhcigtLXN1cmZhY2UpO1xuICBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1ib3JkZXIpO1xuICBib3JkZXItcmFkaXVzOiAxMnB4O1xuICBkaXNwbGF5OiBmbGV4O1xuICBmbGV4LWRpcmVjdGlvbjogY29sdW1uO1xuICBvdmVyZmxvdzogaGlkZGVuO1xuICB0cmFuc2l0aW9uOiBib3JkZXItY29sb3IgMC4ycztcbn1cblxuLmluZ2VzdC1jYXJkOmhvdmVyIHtcbiAgYm9yZGVyLWNvbG9yOiB2YXIoLS1ib3JkZXIyKTtcbn1cblxuLmluZ2VzdC1jYXJkLWhlYWRlciB7XG4gIGRpc3BsYXk6IGZsZXg7XG4gIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gIGdhcDogOHB4O1xuICBwYWRkaW5nOiAxNHB4IDIwcHg7XG4gIGJvcmRlci1ib3R0b206IDFweCBzb2xpZCB2YXIoLS1ib3JkZXIpO1xuICBiYWNrZ3JvdW5kOiB2YXIoLS1zdXJmYWNlMik7XG59XG5cbi5zdGVwLW51bSB7XG4gIGZvbnQtZmFtaWx5OiB2YXIoLS1mb250LWRpc3BsYXkpO1xuICBmb250LXNpemU6IDExcHg7XG4gIGZvbnQtd2VpZ2h0OiA3MDA7XG4gIGNvbG9yOiB2YXIoLS1hY2NlbnQpO1xuICBsZXR0ZXItc3BhY2luZzogMC4xZW07XG59XG5cbi5zdGVwLWljb24geyBjb2xvcjogdmFyKC0tdGV4dDIpOyB9XG4uc3RlcC1sYWJlbCB7XG4gIGZvbnQtc2l6ZTogMTNweDtcbiAgZm9udC13ZWlnaHQ6IDUwMDtcbiAgY29sb3I6IHZhcigtLXRleHQpO1xuICBmbGV4OiAxO1xufVxuXG4uc3RhdHVzLWRvbmUgeyBjb2xvcjogdmFyKC0tZnVsbCk7IG1hcmdpbi1sZWZ0OiBhdXRvOyB9XG5cbi5pbmdlc3QtY2FyZC1ib2R5IHtcbiAgcGFkZGluZzogMjBweDtcbiAgZmxleDogMTtcbn1cblxuLmluZ2VzdC1jYXJkLWZvb3RlciB7XG4gIHBhZGRpbmc6IDE2cHggMjBweDtcbiAgYm9yZGVyLXRvcDogMXB4IHNvbGlkIHZhcigtLWJvcmRlcik7XG4gIGJhY2tncm91bmQ6IHZhcigtLXN1cmZhY2UyKTtcbn1cblxuLmRyb3B6b25lIHtcbiAgYm9yZGVyOiAxLjVweCBkYXNoZWQgdmFyKC0tYm9yZGVyMik7XG4gIGJvcmRlci1yYWRpdXM6IDhweDtcbiAgcGFkZGluZzogMjRweDtcbiAgdGV4dC1hbGlnbjogY2VudGVyO1xuICBjdXJzb3I6IHBvaW50ZXI7XG4gIHRyYW5zaXRpb246IGFsbCAwLjE1cyBlYXNlO1xuICBiYWNrZ3JvdW5kOiB2YXIoLS1zdXJmYWNlMik7XG59XG5cbi5kcm9wem9uZTpob3ZlciwgLmRyb3B6b25lLmRyYWcge1xuICBib3JkZXItY29sb3I6IHZhcigtLWFjY2VudCk7XG4gIGJhY2tncm91bmQ6IHJnYmEoMTA4LCAxMjUsIDI1NSwgMC4wNSk7XG59XG5cbi5kcm9wem9uZS5oYXMtZmlsZSB7XG4gIGJvcmRlci1zdHlsZTogc29saWQ7XG4gIGJvcmRlci1jb2xvcjogdmFyKC0tYm9yZGVyMik7XG59XG5cbi5kcm9wem9uZS1lbXB0eSB7XG4gIGRpc3BsYXk6IGZsZXg7XG4gIGZsZXgtZGlyZWN0aW9uOiBjb2x1bW47XG4gIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gIGdhcDogOHB4O1xuICBjb2xvcjogdmFyKC0tdGV4dDMpO1xuICBmb250LXNpemU6IDEycHg7XG59XG5cbi5kcm9wem9uZS1lbXB0eSBzdmcgeyBjb2xvcjogdmFyKC0tdGV4dDMpOyB9XG5cbi5kcm9wem9uZS1maWxlIHtcbiAgZGlzcGxheTogZmxleDtcbiAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAgZ2FwOiA4cHg7XG4gIGNvbG9yOiB2YXIoLS10ZXh0Mik7XG4gIGZvbnQtc2l6ZTogMTJweDtcbiAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7XG59XG5cbi5yZW1vdmUtZmlsZSB7XG4gIGJhY2tncm91bmQ6IHZhcigtLXN1cmZhY2UzKTtcbiAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tYm9yZGVyKTtcbiAgYm9yZGVyLXJhZGl1czogNHB4O1xuICBjb2xvcjogdmFyKC0tdGV4dDIpO1xuICBwYWRkaW5nOiAycHggNHB4O1xuICBkaXNwbGF5OiBmbGV4O1xuICBhbGlnbi1pdGVtczogY2VudGVyO1xuICBjdXJzb3I6IHBvaW50ZXI7XG59XG5cbi5yZW1vdmUtZmlsZTpob3ZlciB7IGNvbG9yOiB2YXIoLS11bm1hdGNoZWQpOyB9XG5cbi50b2dnbGUtcm93IHtcbiAgZGlzcGxheTogZmxleDtcbiAgZ2FwOiA4cHg7XG4gIG1hcmdpbi1ib3R0b206IDRweDtcbn1cblxuLnRvZ2dsZS1idG4ge1xuICBmbGV4OiAxO1xuICBwYWRkaW5nOiA4cHggMTJweDtcbiAgYm9yZGVyLXJhZGl1czogNnB4O1xuICBmb250LXNpemU6IDEycHg7XG4gIGJhY2tncm91bmQ6IHZhcigtLXN1cmZhY2UyKTtcbiAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tYm9yZGVyKTtcbiAgY29sb3I6IHZhcigtLXRleHQyKTtcbiAgZm9udC1mYW1pbHk6IHZhcigtLWZvbnQtbW9ubyk7XG4gIGN1cnNvcjogcG9pbnRlcjtcbiAgdHJhbnNpdGlvbjogYWxsIDAuMTVzO1xufVxuXG4udG9nZ2xlLWJ0bi5hY3RpdmUge1xuICBiYWNrZ3JvdW5kOiByZ2JhKDEwOCwgMTI1LCAyNTUsIDAuMTIpO1xuICBib3JkZXItY29sb3I6IHZhcigtLWFjY2VudCk7XG4gIGNvbG9yOiB2YXIoLS1hY2NlbnQpO1xufVxuXG4uc2FtcGxlLWNvbnRyb2xzLWluZm8ge1xuICBtYXJnaW4tdG9wOiAxNnB4O1xufVxuXG4uc2FtcGxlLWRvbWFpbnMge1xuICBkaXNwbGF5OiBmbGV4O1xuICBmbGV4LXdyYXA6IHdyYXA7XG4gIGdhcDogNnB4O1xufVxuXG4uZG9tYWluLWNoaXAge1xuICBwYWRkaW5nOiAzcHggMTBweDtcbiAgYmFja2dyb3VuZDogdmFyKC0tc3VyZmFjZTMpO1xuICBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1ib3JkZXIpO1xuICBib3JkZXItcmFkaXVzOiAyMHB4O1xuICBmb250LXNpemU6IDExcHg7XG4gIGNvbG9yOiB2YXIoLS10ZXh0Mik7XG59XG5cbi5ydW4tc2VjdGlvbiB7XG4gIGRpc3BsYXk6IGZsZXg7XG4gIGZsZXgtZGlyZWN0aW9uOiBjb2x1bW47XG4gIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gIGdhcDogMTJweDtcbn1cblxuLmJ0bi1ydW4ge1xuICBkaXNwbGF5OiBpbmxpbmUtZmxleDtcbiAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAgZ2FwOiAxMHB4O1xuICBwYWRkaW5nOiAxNHB4IDM2cHg7XG4gIGJhY2tncm91bmQ6IGxpbmVhci1ncmFkaWVudCgxMzVkZWcsIHZhcigtLWFjY2VudCksICM4YjVjZjYpO1xuICBjb2xvcjogI2ZmZjtcbiAgYm9yZGVyLXJhZGl1czogMTBweDtcbiAgZm9udC1zaXplOiAxNHB4O1xuICBmb250LXdlaWdodDogNjAwO1xuICBmb250LWZhbWlseTogdmFyKC0tZm9udC1kaXNwbGF5KTtcbiAgbGV0dGVyLXNwYWNpbmc6IDAuMDJlbTtcbiAgY3Vyc29yOiBwb2ludGVyO1xuICBib3JkZXI6IG5vbmU7XG4gIHRyYW5zaXRpb246IGFsbCAwLjJzIGVhc2U7XG4gIGJveC1zaGFkb3c6IDAgNHB4IDIwcHggcmdiYSgxMDgsIDEyNSwgMjU1LCAwLjMpO1xufVxuXG4uYnRuLXJ1bjpob3Zlcjpub3QoOmRpc2FibGVkKSB7XG4gIHRyYW5zZm9ybTogdHJhbnNsYXRlWSgtMnB4KTtcbiAgYm94LXNoYWRvdzogMCA4cHggMjhweCByZ2JhKDEwOCwgMTI1LCAyNTUsIDAuNDUpO1xufVxuXG4uYnRuLXJ1bjpkaXNhYmxlZCB7XG4gIG9wYWNpdHk6IDAuNTtcbiAgY3Vyc29yOiBub3QtYWxsb3dlZDtcbiAgdHJhbnNmb3JtOiBub25lO1xuICBib3gtc2hhZG93OiBub25lO1xufVxuXG4ucnVuLWhpbnQge1xuICBmb250LXNpemU6IDEycHg7XG4gIGNvbG9yOiB2YXIoLS10ZXh0Myk7XG59XG5cbi5tdC0xMiB7IG1hcmdpbi10b3A6IDEycHg7IH1cbi5tYi0xNiB7IG1hcmdpbi1ib3R0b206IDE2cHg7IH1cbiJdLCJzb3VyY2VSb290IjoiIn0= */</style><style>.stats-bar {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr) 1.5fr;
+  gap: 12px;
+}
+
+@media (max-width: 900px) {
+  .stats-bar { grid-template-columns: repeat(3, 1fr); }
+}
+
+.stat-tile {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 18px;
+}
+
+.stat-value {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.stat-label {
+  font-size: 11px;
+  color: var(--text3);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.stat-sub {
+  font-size: 11px;
+  color: var(--text3);
+  margin-top: 4px;
+}
+
+.coverage-bar-tile { display: flex; flex-direction: column; }
+
+.coverage-track {
+  height: 6px;
+  background: var(--surface3);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.coverage-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.8s ease;
+}
+
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8uL3NyYy9jb21wb25lbnRzL1N0YXRzQmFyLmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFLGFBQWE7RUFDYiwyQ0FBMkM7RUFDM0MsU0FBUztBQUNYOztBQUVBO0VBQ0UsYUFBYSxxQ0FBcUMsRUFBRTtBQUN0RDs7QUFFQTtFQUNFLDBCQUEwQjtFQUMxQiwrQkFBK0I7RUFDL0IsbUJBQW1CO0VBQ25CLGtCQUFrQjtBQUNwQjs7QUFFQTtFQUNFLGdDQUFnQztFQUNoQyxlQUFlO0VBQ2YsZ0JBQWdCO0VBQ2hCLGtCQUFrQjtFQUNsQixjQUFjO0VBQ2Qsa0JBQWtCO0FBQ3BCOztBQUVBO0VBQ0UsZUFBZTtFQUNmLG1CQUFtQjtFQUNuQixzQkFBc0I7RUFDdEIseUJBQXlCO0FBQzNCOztBQUVBO0VBQ0UsZUFBZTtFQUNmLG1CQUFtQjtFQUNuQixlQUFlO0FBQ2pCOztBQUVBLHFCQUFxQixhQUFhLEVBQUUsc0JBQXNCLEVBQUU7O0FBRTVEO0VBQ0UsV0FBVztFQUNYLDJCQUEyQjtFQUMzQixrQkFBa0I7RUFDbEIsZ0JBQWdCO0VBQ2hCLGtCQUFrQjtBQUNwQjs7QUFFQTtFQUNFLFlBQVk7RUFDWixrQkFBa0I7RUFDbEIsMkJBQTJCO0FBQzdCIiwic291cmNlc0NvbnRlbnQiOlsiLnN0YXRzLWJhciB7XG4gIGRpc3BsYXk6IGdyaWQ7XG4gIGdyaWQtdGVtcGxhdGUtY29sdW1uczogcmVwZWF0KDUsIDFmcikgMS41ZnI7XG4gIGdhcDogMTJweDtcbn1cblxuQG1lZGlhIChtYXgtd2lkdGg6IDkwMHB4KSB7XG4gIC5zdGF0cy1iYXIgeyBncmlkLXRlbXBsYXRlLWNvbHVtbnM6IHJlcGVhdCgzLCAxZnIpOyB9XG59XG5cbi5zdGF0LXRpbGUge1xuICBiYWNrZ3JvdW5kOiB2YXIoLS1zdXJmYWNlKTtcbiAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tYm9yZGVyKTtcbiAgYm9yZGVyLXJhZGl1czogMTBweDtcbiAgcGFkZGluZzogMTZweCAxOHB4O1xufVxuXG4uc3RhdC12YWx1ZSB7XG4gIGZvbnQtZmFtaWx5OiB2YXIoLS1mb250LWRpc3BsYXkpO1xuICBmb250LXNpemU6IDI2cHg7XG4gIGZvbnQtd2VpZ2h0OiA3MDA7XG4gIGNvbG9yOiB2YXIoLS10ZXh0KTtcbiAgbGluZS1oZWlnaHQ6IDE7XG4gIG1hcmdpbi1ib3R0b206IDRweDtcbn1cblxuLnN0YXQtbGFiZWwge1xuICBmb250LXNpemU6IDExcHg7XG4gIGNvbG9yOiB2YXIoLS10ZXh0Myk7XG4gIGxldHRlci1zcGFjaW5nOiAwLjA2ZW07XG4gIHRleHQtdHJhbnNmb3JtOiB1cHBlcmNhc2U7XG59XG5cbi5zdGF0LXN1YiB7XG4gIGZvbnQtc2l6ZTogMTFweDtcbiAgY29sb3I6IHZhcigtLXRleHQzKTtcbiAgbWFyZ2luLXRvcDogNHB4O1xufVxuXG4uY292ZXJhZ2UtYmFyLXRpbGUgeyBkaXNwbGF5OiBmbGV4OyBmbGV4LWRpcmVjdGlvbjogY29sdW1uOyB9XG5cbi5jb3ZlcmFnZS10cmFjayB7XG4gIGhlaWdodDogNnB4O1xuICBiYWNrZ3JvdW5kOiB2YXIoLS1zdXJmYWNlMyk7XG4gIGJvcmRlci1yYWRpdXM6IDNweDtcbiAgb3ZlcmZsb3c6IGhpZGRlbjtcbiAgbWFyZ2luLWJvdHRvbTogNnB4O1xufVxuXG4uY292ZXJhZ2UtZmlsbCB7XG4gIGhlaWdodDogMTAwJTtcbiAgYm9yZGVyLXJhZGl1czogM3B4O1xuICB0cmFuc2l0aW9uOiB3aWR0aCAwLjhzIGVhc2U7XG59XG4iXSwic291cmNlUm9vdCI6IiJ9 */</style><style>.results-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 80px;
+  color: var(--text3);
+  text-align: center;
+}
+
+.empty-state h2 {
+  font-family: var(--font-display);
+  font-size: 18px;
+  color: var(--text2);
+}
+
+.domain-filter-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.filter-icon { color: var(--text3); }
+.filter-label { font-size: 12px; color: var(--text3); white-space: nowrap; }
+
+.domain-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.domain-pill {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text2);
+  cursor: pointer;
+  font-family: var(--font-mono);
+  transition: all 0.15s;
+}
+
+.domain-pill:hover { border-color: var(--border2); color: var(--text); }
+.domain-pill.active {
+  background: rgba(108, 125, 255, 0.12);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.results-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface2);
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: 0.02em;
+}
+
+.section-count {
+  padding: 2px 8px;
+  background: var(--surface3);
+  border-radius: 10px;
+  font-size: 11px;
+  color: var(--text2);
+}
+
+.section-count.unmatched { color: var(--unmatched); background: rgba(248,113,113,0.1); }
+
+.empty-section {
+  padding: 24px;
+  color: var(--text3);
+  font-size: 13px;
+  text-align: center;
+}
+
+.mapping-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.mapping-card {
+  border-bottom: 1px solid var(--border);
+}
+
+.mapping-card:last-child { border-bottom: none; }
+
+.mapping-card.match-full { border-left: 3px solid var(--full); }
+.mapping-card.match-partial { border-left: 3px solid var(--partial); }
+
+.mapping-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  background: transparent;
+  cursor: pointer;
+  gap: 12px;
+  transition: background 0.1s;
+  text-align: left;
+}
+
+.mapping-header:hover { background: var(--surface2); }
+
+.mapping-ids {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  flex: 1 1;
+}
+
+.id-list { display: flex; gap: 4px; flex-wrap: wrap; }
+
+.id-chip {
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  font-family: var(--font-mono);
+}
+
+.id-chip.tc { background: rgba(108,125,255,0.15); color: var(--accent); }
+.id-chip.doc { background: rgba(244,114,182,0.15); color: var(--accent4); }
+.id-chip.base { background: var(--surface3); color: var(--text2); border: 1px solid var(--border); }
+
+.arrow { color: var(--text3); flex-shrink: 0; }
+
+.mapping-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  color: var(--text3);
+}
+
+.mapping-detail {
+  padding: 20px;
+  background: var(--surface2);
+  border-top: 1px solid var(--border);
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr;
+  gap: 20px;
+  margin-bottom: 16px;
+}
+
+.detail-divider { background: var(--border); }
+
+.detail-col-label {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.control-card {
+  background: var(--surface3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 8px;
+}
+
+.base-card { background: rgba(255,255,255,0.02); }
+
+.control-card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.ctrl-id {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text2);
+  font-weight: 500;
+}
+
+.ctrl-domain {
+  font-size: 10px;
+  color: var(--text3);
+  background: var(--surface);
+  padding: 2px 7px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+
+.control-text {
+  font-size: 12.5px;
+  color: var(--text2);
+  line-height: 1.55;
+}
+
+.rationale-box {
+  background: var(--surface3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 16px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.rationale-label {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  white-space: nowrap;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.rationale-box p {
+  font-size: 12.5px;
+  color: var(--text2);
+  line-height: 1.55;
+}
+
+.unmatched-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 12px;
+  padding: 16px;
+}
+
+.unmatched-card {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px;
+  border-left: 3px solid var(--unmatched);
+}
+
+.base-unmatched { border-left-color: var(--text3); }
+
+.unmatched-card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8uL3NyYy9jb21wb25lbnRzL1Jlc3VsdHNQYW5lbC5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSxhQUFhO0VBQ2Isc0JBQXNCO0VBQ3RCLFNBQVM7QUFDWDs7QUFFQTtFQUNFLGFBQWE7RUFDYixzQkFBc0I7RUFDdEIsbUJBQW1CO0VBQ25CLHVCQUF1QjtFQUN2QixTQUFTO0VBQ1QsYUFBYTtFQUNiLG1CQUFtQjtFQUNuQixrQkFBa0I7QUFDcEI7O0FBRUE7RUFDRSxnQ0FBZ0M7RUFDaEMsZUFBZTtFQUNmLG1CQUFtQjtBQUNyQjs7QUFFQTtFQUNFLGFBQWE7RUFDYixtQkFBbUI7RUFDbkIsU0FBUztFQUNULGVBQWU7QUFDakI7O0FBRUEsZUFBZSxtQkFBbUIsRUFBRTtBQUNwQyxnQkFBZ0IsZUFBZSxFQUFFLG1CQUFtQixFQUFFLG1CQUFtQixFQUFFOztBQUUzRTtFQUNFLGFBQWE7RUFDYixlQUFlO0VBQ2YsUUFBUTtBQUNWOztBQUVBO0VBQ0UsaUJBQWlCO0VBQ2pCLG1CQUFtQjtFQUNuQixlQUFlO0VBQ2YsMEJBQTBCO0VBQzFCLCtCQUErQjtFQUMvQixtQkFBbUI7RUFDbkIsZUFBZTtFQUNmLDZCQUE2QjtFQUM3QixxQkFBcUI7QUFDdkI7O0FBRUEscUJBQXFCLDRCQUE0QixFQUFFLGtCQUFrQixFQUFFO0FBQ3ZFO0VBQ0UscUNBQXFDO0VBQ3JDLDJCQUEyQjtFQUMzQixvQkFBb0I7QUFDdEI7O0FBRUE7RUFDRSwwQkFBMEI7RUFDMUIsK0JBQStCO0VBQy9CLG1CQUFtQjtFQUNuQixnQkFBZ0I7QUFDbEI7O0FBRUE7RUFDRSxhQUFhO0VBQ2IsbUJBQW1CO0VBQ25CLFNBQVM7RUFDVCxrQkFBa0I7RUFDbEIsc0NBQXNDO0VBQ3RDLDJCQUEyQjtBQUM3Qjs7QUFFQTtFQUNFLGdDQUFnQztFQUNoQyxlQUFlO0VBQ2YsZ0JBQWdCO0VBQ2hCLGtCQUFrQjtFQUNsQixzQkFBc0I7QUFDeEI7O0FBRUE7RUFDRSxnQkFBZ0I7RUFDaEIsMkJBQTJCO0VBQzNCLG1CQUFtQjtFQUNuQixlQUFlO0VBQ2YsbUJBQW1CO0FBQ3JCOztBQUVBLDJCQUEyQix1QkFBdUIsRUFBRSxpQ0FBaUMsRUFBRTs7QUFFdkY7RUFDRSxhQUFhO0VBQ2IsbUJBQW1CO0VBQ25CLGVBQWU7RUFDZixrQkFBa0I7QUFDcEI7O0FBRUE7RUFDRSxhQUFhO0VBQ2Isc0JBQXNCO0FBQ3hCOztBQUVBO0VBQ0Usc0NBQXNDO0FBQ3hDOztBQUVBLDJCQUEyQixtQkFBbUIsRUFBRTs7QUFFaEQsMkJBQTJCLGtDQUFrQyxFQUFFO0FBQy9ELDhCQUE4QixxQ0FBcUMsRUFBRTs7QUFFckU7RUFDRSxXQUFXO0VBQ1gsYUFBYTtFQUNiLG1CQUFtQjtFQUNuQiw4QkFBOEI7RUFDOUIsa0JBQWtCO0VBQ2xCLHVCQUF1QjtFQUN2QixlQUFlO0VBQ2YsU0FBUztFQUNULDJCQUEyQjtFQUMzQixnQkFBZ0I7QUFDbEI7O0FBRUEsd0JBQXdCLDJCQUEyQixFQUFFOztBQUVyRDtFQUNFLGFBQWE7RUFDYixtQkFBbUI7RUFDbkIsUUFBUTtFQUNSLGVBQWU7RUFDZixTQUFPO0FBQ1Q7O0FBRUEsV0FBVyxhQUFhLEVBQUUsUUFBUSxFQUFFLGVBQWUsRUFBRTs7QUFFckQ7RUFDRSxnQkFBZ0I7RUFDaEIsa0JBQWtCO0VBQ2xCLGVBQWU7RUFDZixnQkFBZ0I7RUFDaEIsNkJBQTZCO0FBQy9COztBQUVBLGNBQWMsa0NBQWtDLEVBQUUsb0JBQW9CLEVBQUU7QUFDeEUsZUFBZSxrQ0FBa0MsRUFBRSxxQkFBcUIsRUFBRTtBQUMxRSxnQkFBZ0IsMkJBQTJCLEVBQUUsbUJBQW1CLEVBQUUsK0JBQStCLEVBQUU7O0FBRW5HLFNBQVMsbUJBQW1CLEVBQUUsY0FBYyxFQUFFOztBQUU5QztFQUNFLGFBQWE7RUFDYixtQkFBbUI7RUFDbkIsU0FBUztFQUNULGNBQWM7RUFDZCxtQkFBbUI7QUFDckI7O0FBRUE7RUFDRSxhQUFhO0VBQ2IsMkJBQTJCO0VBQzNCLG1DQUFtQztBQUNyQzs7QUFFQTtFQUNFLGFBQWE7RUFDYixrQ0FBa0M7RUFDbEMsU0FBUztFQUNULG1CQUFtQjtBQUNyQjs7QUFFQSxrQkFBa0IseUJBQXlCLEVBQUU7O0FBRTdDO0VBQ0UsZUFBZTtFQUNmLHFCQUFxQjtFQUNyQix5QkFBeUI7RUFDekIsbUJBQW1CO0VBQ25CLG1CQUFtQjtFQUNuQixnQkFBZ0I7QUFDbEI7O0FBRUE7RUFDRSwyQkFBMkI7RUFDM0IsK0JBQStCO0VBQy9CLGtCQUFrQjtFQUNsQixhQUFhO0VBQ2Isa0JBQWtCO0FBQ3BCOztBQUVBLGFBQWEsa0NBQWtDLEVBQUU7O0FBRWpEO0VBQ0UsYUFBYTtFQUNiLG1CQUFtQjtFQUNuQixRQUFRO0VBQ1Isa0JBQWtCO0VBQ2xCLGVBQWU7QUFDakI7O0FBRUE7RUFDRSw2QkFBNkI7RUFDN0IsZUFBZTtFQUNmLG1CQUFtQjtFQUNuQixnQkFBZ0I7QUFDbEI7O0FBRUE7RUFDRSxlQUFlO0VBQ2YsbUJBQW1CO0VBQ25CLDBCQUEwQjtFQUMxQixnQkFBZ0I7RUFDaEIsbUJBQW1CO0VBQ25CLCtCQUErQjtBQUNqQzs7QUFFQTtFQUNFLGlCQUFpQjtFQUNqQixtQkFBbUI7RUFDbkIsaUJBQWlCO0FBQ25COztBQUVBO0VBQ0UsMkJBQTJCO0VBQzNCLCtCQUErQjtFQUMvQixrQkFBa0I7RUFDbEIsa0JBQWtCO0VBQ2xCLGFBQWE7RUFDYixTQUFTO0VBQ1QsdUJBQXVCO0FBQ3pCOztBQUVBO0VBQ0UsZUFBZTtFQUNmLHFCQUFxQjtFQUNyQix5QkFBeUI7RUFDekIsb0JBQW9CO0VBQ3BCLG1CQUFtQjtFQUNuQixnQkFBZ0I7RUFDaEIsZUFBZTtBQUNqQjs7QUFFQTtFQUNFLGlCQUFpQjtFQUNqQixtQkFBbUI7RUFDbkIsaUJBQWlCO0FBQ25COztBQUVBO0VBQ0UsYUFBYTtFQUNiLDREQUE0RDtFQUM1RCxTQUFTO0VBQ1QsYUFBYTtBQUNmOztBQUVBO0VBQ0UsMkJBQTJCO0VBQzNCLCtCQUErQjtFQUMvQixrQkFBa0I7RUFDbEIsYUFBYTtFQUNiLHVDQUF1QztBQUN6Qzs7QUFFQSxrQkFBa0IsK0JBQStCLEVBQUU7O0FBRW5EO0VBQ0UsYUFBYTtFQUNiLG1CQUFtQjtFQUNuQixRQUFRO0VBQ1Isa0JBQWtCO0VBQ2xCLGVBQWU7QUFDakIiLCJzb3VyY2VzQ29udGVudCI6WyIucmVzdWx0cy1sYXlvdXQge1xuICBkaXNwbGF5OiBmbGV4O1xuICBmbGV4LWRpcmVjdGlvbjogY29sdW1uO1xuICBnYXA6IDI0cHg7XG59XG5cbi5lbXB0eS1zdGF0ZSB7XG4gIGRpc3BsYXk6IGZsZXg7XG4gIGZsZXgtZGlyZWN0aW9uOiBjb2x1bW47XG4gIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICBnYXA6IDEycHg7XG4gIHBhZGRpbmc6IDgwcHg7XG4gIGNvbG9yOiB2YXIoLS10ZXh0Myk7XG4gIHRleHQtYWxpZ246IGNlbnRlcjtcbn1cblxuLmVtcHR5LXN0YXRlIGgyIHtcbiAgZm9udC1mYW1pbHk6IHZhcigtLWZvbnQtZGlzcGxheSk7XG4gIGZvbnQtc2l6ZTogMThweDtcbiAgY29sb3I6IHZhcigtLXRleHQyKTtcbn1cblxuLmRvbWFpbi1maWx0ZXItcm93IHtcbiAgZGlzcGxheTogZmxleDtcbiAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAgZ2FwOiAxMHB4O1xuICBmbGV4LXdyYXA6IHdyYXA7XG59XG5cbi5maWx0ZXItaWNvbiB7IGNvbG9yOiB2YXIoLS10ZXh0Myk7IH1cbi5maWx0ZXItbGFiZWwgeyBmb250LXNpemU6IDEycHg7IGNvbG9yOiB2YXIoLS10ZXh0Myk7IHdoaXRlLXNwYWNlOiBub3dyYXA7IH1cblxuLmRvbWFpbi1waWxscyB7XG4gIGRpc3BsYXk6IGZsZXg7XG4gIGZsZXgtd3JhcDogd3JhcDtcbiAgZ2FwOiA2cHg7XG59XG5cbi5kb21haW4tcGlsbCB7XG4gIHBhZGRpbmc6IDRweCAxMnB4O1xuICBib3JkZXItcmFkaXVzOiAyMHB4O1xuICBmb250LXNpemU6IDExcHg7XG4gIGJhY2tncm91bmQ6IHZhcigtLXN1cmZhY2UpO1xuICBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1ib3JkZXIpO1xuICBjb2xvcjogdmFyKC0tdGV4dDIpO1xuICBjdXJzb3I6IHBvaW50ZXI7XG4gIGZvbnQtZmFtaWx5OiB2YXIoLS1mb250LW1vbm8pO1xuICB0cmFuc2l0aW9uOiBhbGwgMC4xNXM7XG59XG5cbi5kb21haW4tcGlsbDpob3ZlciB7IGJvcmRlci1jb2xvcjogdmFyKC0tYm9yZGVyMik7IGNvbG9yOiB2YXIoLS10ZXh0KTsgfVxuLmRvbWFpbi1waWxsLmFjdGl2ZSB7XG4gIGJhY2tncm91bmQ6IHJnYmEoMTA4LCAxMjUsIDI1NSwgMC4xMik7XG4gIGJvcmRlci1jb2xvcjogdmFyKC0tYWNjZW50KTtcbiAgY29sb3I6IHZhcigtLWFjY2VudCk7XG59XG5cbi5yZXN1bHRzLXNlY3Rpb24ge1xuICBiYWNrZ3JvdW5kOiB2YXIoLS1zdXJmYWNlKTtcbiAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tYm9yZGVyKTtcbiAgYm9yZGVyLXJhZGl1czogMTJweDtcbiAgb3ZlcmZsb3c6IGhpZGRlbjtcbn1cblxuLnNlY3Rpb24taGVhZGVyIHtcbiAgZGlzcGxheTogZmxleDtcbiAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAgZ2FwOiAxMHB4O1xuICBwYWRkaW5nOiAxNHB4IDIwcHg7XG4gIGJvcmRlci1ib3R0b206IDFweCBzb2xpZCB2YXIoLS1ib3JkZXIpO1xuICBiYWNrZ3JvdW5kOiB2YXIoLS1zdXJmYWNlMik7XG59XG5cbi5zZWN0aW9uLXRpdGxlIHtcbiAgZm9udC1mYW1pbHk6IHZhcigtLWZvbnQtZGlzcGxheSk7XG4gIGZvbnQtc2l6ZTogMTNweDtcbiAgZm9udC13ZWlnaHQ6IDYwMDtcbiAgY29sb3I6IHZhcigtLXRleHQpO1xuICBsZXR0ZXItc3BhY2luZzogMC4wMmVtO1xufVxuXG4uc2VjdGlvbi1jb3VudCB7XG4gIHBhZGRpbmc6IDJweCA4cHg7XG4gIGJhY2tncm91bmQ6IHZhcigtLXN1cmZhY2UzKTtcbiAgYm9yZGVyLXJhZGl1czogMTBweDtcbiAgZm9udC1zaXplOiAxMXB4O1xuICBjb2xvcjogdmFyKC0tdGV4dDIpO1xufVxuXG4uc2VjdGlvbi1jb3VudC51bm1hdGNoZWQgeyBjb2xvcjogdmFyKC0tdW5tYXRjaGVkKTsgYmFja2dyb3VuZDogcmdiYSgyNDgsMTEzLDExMywwLjEpOyB9XG5cbi5lbXB0eS1zZWN0aW9uIHtcbiAgcGFkZGluZzogMjRweDtcbiAgY29sb3I6IHZhcigtLXRleHQzKTtcbiAgZm9udC1zaXplOiAxM3B4O1xuICB0ZXh0LWFsaWduOiBjZW50ZXI7XG59XG5cbi5tYXBwaW5nLWxpc3Qge1xuICBkaXNwbGF5OiBmbGV4O1xuICBmbGV4LWRpcmVjdGlvbjogY29sdW1uO1xufVxuXG4ubWFwcGluZy1jYXJkIHtcbiAgYm9yZGVyLWJvdHRvbTogMXB4IHNvbGlkIHZhcigtLWJvcmRlcik7XG59XG5cbi5tYXBwaW5nLWNhcmQ6bGFzdC1jaGlsZCB7IGJvcmRlci1ib3R0b206IG5vbmU7IH1cblxuLm1hcHBpbmctY2FyZC5tYXRjaC1mdWxsIHsgYm9yZGVyLWxlZnQ6IDNweCBzb2xpZCB2YXIoLS1mdWxsKTsgfVxuLm1hcHBpbmctY2FyZC5tYXRjaC1wYXJ0aWFsIHsgYm9yZGVyLWxlZnQ6IDNweCBzb2xpZCB2YXIoLS1wYXJ0aWFsKTsgfVxuXG4ubWFwcGluZy1oZWFkZXIge1xuICB3aWR0aDogMTAwJTtcbiAgZGlzcGxheTogZmxleDtcbiAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAganVzdGlmeS1jb250ZW50OiBzcGFjZS1iZXR3ZWVuO1xuICBwYWRkaW5nOiAxNHB4IDIwcHg7XG4gIGJhY2tncm91bmQ6IHRyYW5zcGFyZW50O1xuICBjdXJzb3I6IHBvaW50ZXI7XG4gIGdhcDogMTJweDtcbiAgdHJhbnNpdGlvbjogYmFja2dyb3VuZCAwLjFzO1xuICB0ZXh0LWFsaWduOiBsZWZ0O1xufVxuXG4ubWFwcGluZy1oZWFkZXI6aG92ZXIgeyBiYWNrZ3JvdW5kOiB2YXIoLS1zdXJmYWNlMik7IH1cblxuLm1hcHBpbmctaWRzIHtcbiAgZGlzcGxheTogZmxleDtcbiAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAgZ2FwOiA4cHg7XG4gIGZsZXgtd3JhcDogd3JhcDtcbiAgZmxleDogMTtcbn1cblxuLmlkLWxpc3QgeyBkaXNwbGF5OiBmbGV4OyBnYXA6IDRweDsgZmxleC13cmFwOiB3cmFwOyB9XG5cbi5pZC1jaGlwIHtcbiAgcGFkZGluZzogMnB4IDhweDtcbiAgYm9yZGVyLXJhZGl1czogNHB4O1xuICBmb250LXNpemU6IDExcHg7XG4gIGZvbnQtd2VpZ2h0OiA1MDA7XG4gIGZvbnQtZmFtaWx5OiB2YXIoLS1mb250LW1vbm8pO1xufVxuXG4uaWQtY2hpcC50YyB7IGJhY2tncm91bmQ6IHJnYmEoMTA4LDEyNSwyNTUsMC4xNSk7IGNvbG9yOiB2YXIoLS1hY2NlbnQpOyB9XG4uaWQtY2hpcC5kb2MgeyBiYWNrZ3JvdW5kOiByZ2JhKDI0NCwxMTQsMTgyLDAuMTUpOyBjb2xvcjogdmFyKC0tYWNjZW50NCk7IH1cbi5pZC1jaGlwLmJhc2UgeyBiYWNrZ3JvdW5kOiB2YXIoLS1zdXJmYWNlMyk7IGNvbG9yOiB2YXIoLS10ZXh0Mik7IGJvcmRlcjogMXB4IHNvbGlkIHZhcigtLWJvcmRlcik7IH1cblxuLmFycm93IHsgY29sb3I6IHZhcigtLXRleHQzKTsgZmxleC1zaHJpbms6IDA7IH1cblxuLm1hcHBpbmctbWV0YSB7XG4gIGRpc3BsYXk6IGZsZXg7XG4gIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gIGdhcDogMTBweDtcbiAgZmxleC1zaHJpbms6IDA7XG4gIGNvbG9yOiB2YXIoLS10ZXh0Myk7XG59XG5cbi5tYXBwaW5nLWRldGFpbCB7XG4gIHBhZGRpbmc6IDIwcHg7XG4gIGJhY2tncm91bmQ6IHZhcigtLXN1cmZhY2UyKTtcbiAgYm9yZGVyLXRvcDogMXB4IHNvbGlkIHZhcigtLWJvcmRlcik7XG59XG5cbi5kZXRhaWwtZ3JpZCB7XG4gIGRpc3BsYXk6IGdyaWQ7XG4gIGdyaWQtdGVtcGxhdGUtY29sdW1uczogMWZyIDFweCAxZnI7XG4gIGdhcDogMjBweDtcbiAgbWFyZ2luLWJvdHRvbTogMTZweDtcbn1cblxuLmRldGFpbC1kaXZpZGVyIHsgYmFja2dyb3VuZDogdmFyKC0tYm9yZGVyKTsgfVxuXG4uZGV0YWlsLWNvbC1sYWJlbCB7XG4gIGZvbnQtc2l6ZTogMTBweDtcbiAgbGV0dGVyLXNwYWNpbmc6IDAuMWVtO1xuICB0ZXh0LXRyYW5zZm9ybTogdXBwZXJjYXNlO1xuICBjb2xvcjogdmFyKC0tdGV4dDMpO1xuICBtYXJnaW4tYm90dG9tOiAxMHB4O1xuICBmb250LXdlaWdodDogNTAwO1xufVxuXG4uY29udHJvbC1jYXJkIHtcbiAgYmFja2dyb3VuZDogdmFyKC0tc3VyZmFjZTMpO1xuICBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1ib3JkZXIpO1xuICBib3JkZXItcmFkaXVzOiA4cHg7XG4gIHBhZGRpbmc6IDEycHg7XG4gIG1hcmdpbi1ib3R0b206IDhweDtcbn1cblxuLmJhc2UtY2FyZCB7IGJhY2tncm91bmQ6IHJnYmEoMjU1LDI1NSwyNTUsMC4wMik7IH1cblxuLmNvbnRyb2wtY2FyZC1oZWFkZXIge1xuICBkaXNwbGF5OiBmbGV4O1xuICBhbGlnbi1pdGVtczogY2VudGVyO1xuICBnYXA6IDhweDtcbiAgbWFyZ2luLWJvdHRvbTogOHB4O1xuICBmbGV4LXdyYXA6IHdyYXA7XG59XG5cbi5jdHJsLWlkIHtcbiAgZm9udC1mYW1pbHk6IHZhcigtLWZvbnQtbW9ubyk7XG4gIGZvbnQtc2l6ZTogMTFweDtcbiAgY29sb3I6IHZhcigtLXRleHQyKTtcbiAgZm9udC13ZWlnaHQ6IDUwMDtcbn1cblxuLmN0cmwtZG9tYWluIHtcbiAgZm9udC1zaXplOiAxMHB4O1xuICBjb2xvcjogdmFyKC0tdGV4dDMpO1xuICBiYWNrZ3JvdW5kOiB2YXIoLS1zdXJmYWNlKTtcbiAgcGFkZGluZzogMnB4IDdweDtcbiAgYm9yZGVyLXJhZGl1czogMTBweDtcbiAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tYm9yZGVyKTtcbn1cblxuLmNvbnRyb2wtdGV4dCB7XG4gIGZvbnQtc2l6ZTogMTIuNXB4O1xuICBjb2xvcjogdmFyKC0tdGV4dDIpO1xuICBsaW5lLWhlaWdodDogMS41NTtcbn1cblxuLnJhdGlvbmFsZS1ib3gge1xuICBiYWNrZ3JvdW5kOiB2YXIoLS1zdXJmYWNlMyk7XG4gIGJvcmRlcjogMXB4IHNvbGlkIHZhcigtLWJvcmRlcik7XG4gIGJvcmRlci1yYWRpdXM6IDhweDtcbiAgcGFkZGluZzogMTJweCAxNnB4O1xuICBkaXNwbGF5OiBmbGV4O1xuICBnYXA6IDEycHg7XG4gIGFsaWduLWl0ZW1zOiBmbGV4LXN0YXJ0O1xufVxuXG4ucmF0aW9uYWxlLWxhYmVsIHtcbiAgZm9udC1zaXplOiAxMHB4O1xuICBsZXR0ZXItc3BhY2luZzogMC4xZW07XG4gIHRleHQtdHJhbnNmb3JtOiB1cHBlcmNhc2U7XG4gIGNvbG9yOiB2YXIoLS1hY2NlbnQpO1xuICB3aGl0ZS1zcGFjZTogbm93cmFwO1xuICBmb250LXdlaWdodDogNjAwO1xuICBtYXJnaW4tdG9wOiAycHg7XG59XG5cbi5yYXRpb25hbGUtYm94IHAge1xuICBmb250LXNpemU6IDEyLjVweDtcbiAgY29sb3I6IHZhcigtLXRleHQyKTtcbiAgbGluZS1oZWlnaHQ6IDEuNTU7XG59XG5cbi51bm1hdGNoZWQtZ3JpZCB7XG4gIGRpc3BsYXk6IGdyaWQ7XG4gIGdyaWQtdGVtcGxhdGUtY29sdW1uczogcmVwZWF0KGF1dG8tZmlsbCwgbWlubWF4KDMyMHB4LCAxZnIpKTtcbiAgZ2FwOiAxMnB4O1xuICBwYWRkaW5nOiAxNnB4O1xufVxuXG4udW5tYXRjaGVkLWNhcmQge1xuICBiYWNrZ3JvdW5kOiB2YXIoLS1zdXJmYWNlMik7XG4gIGJvcmRlcjogMXB4IHNvbGlkIHZhcigtLWJvcmRlcik7XG4gIGJvcmRlci1yYWRpdXM6IDhweDtcbiAgcGFkZGluZzogMTRweDtcbiAgYm9yZGVyLWxlZnQ6IDNweCBzb2xpZCB2YXIoLS11bm1hdGNoZWQpO1xufVxuXG4uYmFzZS11bm1hdGNoZWQgeyBib3JkZXItbGVmdC1jb2xvcjogdmFyKC0tdGV4dDMpOyB9XG5cbi51bm1hdGNoZWQtY2FyZC1oZWFkZXIge1xuICBkaXNwbGF5OiBmbGV4O1xuICBhbGlnbi1pdGVtczogY2VudGVyO1xuICBnYXA6IDhweDtcbiAgbWFyZ2luLWJvdHRvbTogOHB4O1xuICBmbGV4LXdyYXA6IHdyYXA7XG59XG4iXSwic291cmNlUm9vdCI6IiJ9 */</style><style>.evals-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.evals-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.evals-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.evals-sub { font-size: 13px; color: var(--text3); margin-top: 4px; }
+
+.evals-grid {
+  display: grid;
+  grid-template-columns: auto 1fr 1fr 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 1100px) {
+  .evals-grid { grid-template-columns: 1fr 1fr; }
+  .eval-hero { grid-column: span 2; }
+}
+
+.eval-hero {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.grade-display {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.grade-letter {
+  font-family: var(--font-display);
+  font-size: 72px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.grade-score {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.grade-label {
+  font-size: 11px;
+  color: var(--text3);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.eval-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.span-full {
+  grid-column: 1 / -1;
+}
+
+.chart-card { padding: 16px 20px; }
+
+.eval-card-title {
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text3);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.score-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.score-num {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.score-denom {
+  font-size: 14px;
+  color: var(--text3);
+  margin-right: 8px;
+}
+
+.score-bar-wrap { flex: 1 1; min-width: 60px; }
+
+.score-bar-track {
+  height: 6px;
+  background: var(--surface3);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.score-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 1s ease;
+}
+
+.eval-notes {
+  font-size: 12px;
+  color: var(--text2);
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+.eval-meta {
+  font-size: 11px;
+  color: var(--text3);
+  margin-bottom: 8px;
+}
+
+.eval-issues {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 8px;
+}
+
+.issue-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  font-size: 11.5px;
+  color: var(--partial);
+}
+
+.issue-item svg { flex-shrink: 0; margin-top: 1px; }
+
+.coverage-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.cov-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cov-label { font-size: 12px; color: var(--text2); min-width: 120px; }
+
+.cov-track {
+  flex: 1 1;
+  height: 6px;
+  background: var(--surface3);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.cov-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.8s ease;
+}
+
+.cov-val { font-size: 12px; font-weight: 600; min-width: 36px; text-align: right; }
+
+.coverage-counts {
+  display: flex;
+  gap: 16px;
+  font-size: 11px;
+  color: var(--text3);
+  flex-wrap: wrap;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 80px;
+  color: var(--text3);
+  text-align: center;
+}
+
+.empty-state h2 {
+  font-family: var(--font-display);
+  font-size: 18px;
+  color: var(--text2);
+}
+
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8uL3NyYy9jb21wb25lbnRzL0V2YWxzUGFuZWwuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0UsYUFBYTtFQUNiLHNCQUFzQjtFQUN0QixTQUFTO0FBQ1g7O0FBRUE7RUFDRSxhQUFhO0VBQ2IsdUJBQXVCO0VBQ3ZCLDhCQUE4QjtFQUM5QixTQUFTO0FBQ1g7O0FBRUE7RUFDRSxnQ0FBZ0M7RUFDaEMsZUFBZTtFQUNmLGdCQUFnQjtFQUNoQixrQkFBa0I7QUFDcEI7O0FBRUEsYUFBYSxlQUFlLEVBQUUsbUJBQW1CLEVBQUUsZUFBZSxFQUFFOztBQUVwRTtFQUNFLGFBQWE7RUFDYiwyQ0FBMkM7RUFDM0MsU0FBUztBQUNYOztBQUVBO0VBQ0UsY0FBYyw4QkFBOEIsRUFBRTtFQUM5QyxhQUFhLG1CQUFtQixFQUFFO0FBQ3BDOztBQUVBO0VBQ0UsMEJBQTBCO0VBQzFCLCtCQUErQjtFQUMvQixtQkFBbUI7RUFDbkIsa0JBQWtCO0VBQ2xCLGFBQWE7RUFDYixtQkFBbUI7RUFDbkIsdUJBQXVCO0FBQ3pCOztBQUVBO0VBQ0UsYUFBYTtFQUNiLG1CQUFtQjtFQUNuQixTQUFTO0FBQ1g7O0FBRUE7RUFDRSxnQ0FBZ0M7RUFDaEMsZUFBZTtFQUNmLGdCQUFnQjtFQUNoQixjQUFjO0FBQ2hCOztBQUVBO0VBQ0UsZ0NBQWdDO0VBQ2hDLGVBQWU7RUFDZixnQkFBZ0I7RUFDaEIsa0JBQWtCO0FBQ3BCOztBQUVBO0VBQ0UsZUFBZTtFQUNmLG1CQUFtQjtFQUNuQixzQkFBc0I7RUFDdEIseUJBQXlCO0FBQzNCOztBQUVBO0VBQ0UsMEJBQTBCO0VBQzFCLCtCQUErQjtFQUMvQixtQkFBbUI7RUFDbkIsYUFBYTtBQUNmOztBQUVBO0VBQ0UsbUJBQW1CO0FBQ3JCOztBQUVBLGNBQWMsa0JBQWtCLEVBQUU7O0FBRWxDO0VBQ0UsZ0NBQWdDO0VBQ2hDLGVBQWU7RUFDZixnQkFBZ0I7RUFDaEIsbUJBQW1CO0VBQ25CLHNCQUFzQjtFQUN0Qix5QkFBeUI7RUFDekIsbUJBQW1CO0FBQ3JCOztBQUVBO0VBQ0UsYUFBYTtFQUNiLHFCQUFxQjtFQUNyQixRQUFRO0VBQ1IsbUJBQW1CO0VBQ25CLGVBQWU7QUFDakI7O0FBRUE7RUFDRSxnQ0FBZ0M7RUFDaEMsZUFBZTtFQUNmLGdCQUFnQjtFQUNoQixjQUFjO0FBQ2hCOztBQUVBO0VBQ0UsZUFBZTtFQUNmLG1CQUFtQjtFQUNuQixpQkFBaUI7QUFDbkI7O0FBRUEsa0JBQWtCLFNBQU8sRUFBRSxlQUFlLEVBQUU7O0FBRTVDO0VBQ0UsV0FBVztFQUNYLDJCQUEyQjtFQUMzQixrQkFBa0I7RUFDbEIsZ0JBQWdCO0FBQ2xCOztBQUVBO0VBQ0UsWUFBWTtFQUNaLGtCQUFrQjtFQUNsQix5QkFBeUI7QUFDM0I7O0FBRUE7RUFDRSxlQUFlO0VBQ2YsbUJBQW1CO0VBQ25CLGtCQUFrQjtFQUNsQixnQkFBZ0I7QUFDbEI7O0FBRUE7RUFDRSxlQUFlO0VBQ2YsbUJBQW1CO0VBQ25CLGtCQUFrQjtBQUNwQjs7QUFFQTtFQUNFLGFBQWE7RUFDYixzQkFBc0I7RUFDdEIsUUFBUTtFQUNSLGVBQWU7QUFDakI7O0FBRUE7RUFDRSxhQUFhO0VBQ2IsdUJBQXVCO0VBQ3ZCLFFBQVE7RUFDUixpQkFBaUI7RUFDakIscUJBQXFCO0FBQ3ZCOztBQUVBLGtCQUFrQixjQUFjLEVBQUUsZUFBZSxFQUFFOztBQUVuRDtFQUNFLGFBQWE7RUFDYixzQkFBc0I7RUFDdEIsU0FBUztFQUNULG1CQUFtQjtBQUNyQjs7QUFFQTtFQUNFLGFBQWE7RUFDYixtQkFBbUI7RUFDbkIsU0FBUztBQUNYOztBQUVBLGFBQWEsZUFBZSxFQUFFLG1CQUFtQixFQUFFLGdCQUFnQixFQUFFOztBQUVyRTtFQUNFLFNBQU87RUFDUCxXQUFXO0VBQ1gsMkJBQTJCO0VBQzNCLGtCQUFrQjtFQUNsQixnQkFBZ0I7QUFDbEI7O0FBRUE7RUFDRSxZQUFZO0VBQ1osa0JBQWtCO0VBQ2xCLDJCQUEyQjtBQUM3Qjs7QUFFQSxXQUFXLGVBQWUsRUFBRSxnQkFBZ0IsRUFBRSxlQUFlLEVBQUUsaUJBQWlCLEVBQUU7O0FBRWxGO0VBQ0UsYUFBYTtFQUNiLFNBQVM7RUFDVCxlQUFlO0VBQ2YsbUJBQW1CO0VBQ25CLGVBQWU7QUFDakI7O0FBRUE7RUFDRSxhQUFhO0VBQ2Isc0JBQXNCO0VBQ3RCLG1CQUFtQjtFQUNuQix1QkFBdUI7RUFDdkIsU0FBUztFQUNULGFBQWE7RUFDYixtQkFBbUI7RUFDbkIsa0JBQWtCO0FBQ3BCOztBQUVBO0VBQ0UsZ0NBQWdDO0VBQ2hDLGVBQWU7RUFDZixtQkFBbUI7QUFDckIiLCJzb3VyY2VzQ29udGVudCI6WyIuZXZhbHMtbGF5b3V0IHtcbiAgZGlzcGxheTogZmxleDtcbiAgZmxleC1kaXJlY3Rpb246IGNvbHVtbjtcbiAgZ2FwOiAyNHB4O1xufVxuXG4uZXZhbHMtaGVhZGVyIHtcbiAgZGlzcGxheTogZmxleDtcbiAgYWxpZ24taXRlbXM6IGZsZXgtc3RhcnQ7XG4gIGp1c3RpZnktY29udGVudDogc3BhY2UtYmV0d2VlbjtcbiAgZ2FwOiAxNnB4O1xufVxuXG4uZXZhbHMtdGl0bGUge1xuICBmb250LWZhbWlseTogdmFyKC0tZm9udC1kaXNwbGF5KTtcbiAgZm9udC1zaXplOiAyMnB4O1xuICBmb250LXdlaWdodDogNzAwO1xuICBjb2xvcjogdmFyKC0tdGV4dCk7XG59XG5cbi5ldmFscy1zdWIgeyBmb250LXNpemU6IDEzcHg7IGNvbG9yOiB2YXIoLS10ZXh0Myk7IG1hcmdpbi10b3A6IDRweDsgfVxuXG4uZXZhbHMtZ3JpZCB7XG4gIGRpc3BsYXk6IGdyaWQ7XG4gIGdyaWQtdGVtcGxhdGUtY29sdW1uczogYXV0byAxZnIgMWZyIDFmciAxZnI7XG4gIGdhcDogMTZweDtcbn1cblxuQG1lZGlhIChtYXgtd2lkdGg6IDExMDBweCkge1xuICAuZXZhbHMtZ3JpZCB7IGdyaWQtdGVtcGxhdGUtY29sdW1uczogMWZyIDFmcjsgfVxuICAuZXZhbC1oZXJvIHsgZ3JpZC1jb2x1bW46IHNwYW4gMjsgfVxufVxuXG4uZXZhbC1oZXJvIHtcbiAgYmFja2dyb3VuZDogdmFyKC0tc3VyZmFjZSk7XG4gIGJvcmRlcjogMXB4IHNvbGlkIHZhcigtLWJvcmRlcik7XG4gIGJvcmRlci1yYWRpdXM6IDEycHg7XG4gIHBhZGRpbmc6IDI0cHggMzJweDtcbiAgZGlzcGxheTogZmxleDtcbiAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7XG59XG5cbi5ncmFkZS1kaXNwbGF5IHtcbiAgZGlzcGxheTogZmxleDtcbiAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAgZ2FwOiAxNnB4O1xufVxuXG4uZ3JhZGUtbGV0dGVyIHtcbiAgZm9udC1mYW1pbHk6IHZhcigtLWZvbnQtZGlzcGxheSk7XG4gIGZvbnQtc2l6ZTogNzJweDtcbiAgZm9udC13ZWlnaHQ6IDgwMDtcbiAgbGluZS1oZWlnaHQ6IDE7XG59XG5cbi5ncmFkZS1zY29yZSB7XG4gIGZvbnQtZmFtaWx5OiB2YXIoLS1mb250LWRpc3BsYXkpO1xuICBmb250LXNpemU6IDIycHg7XG4gIGZvbnQtd2VpZ2h0OiA3MDA7XG4gIGNvbG9yOiB2YXIoLS10ZXh0KTtcbn1cblxuLmdyYWRlLWxhYmVsIHtcbiAgZm9udC1zaXplOiAxMXB4O1xuICBjb2xvcjogdmFyKC0tdGV4dDMpO1xuICBsZXR0ZXItc3BhY2luZzogMC4wOGVtO1xuICB0ZXh0LXRyYW5zZm9ybTogdXBwZXJjYXNlO1xufVxuXG4uZXZhbC1jYXJkIHtcbiAgYmFja2dyb3VuZDogdmFyKC0tc3VyZmFjZSk7XG4gIGJvcmRlcjogMXB4IHNvbGlkIHZhcigtLWJvcmRlcik7XG4gIGJvcmRlci1yYWRpdXM6IDEycHg7XG4gIHBhZGRpbmc6IDIwcHg7XG59XG5cbi5zcGFuLWZ1bGwge1xuICBncmlkLWNvbHVtbjogMSAvIC0xO1xufVxuXG4uY2hhcnQtY2FyZCB7IHBhZGRpbmc6IDE2cHggMjBweDsgfVxuXG4uZXZhbC1jYXJkLXRpdGxlIHtcbiAgZm9udC1mYW1pbHk6IHZhcigtLWZvbnQtZGlzcGxheSk7XG4gIGZvbnQtc2l6ZTogMTJweDtcbiAgZm9udC13ZWlnaHQ6IDYwMDtcbiAgY29sb3I6IHZhcigtLXRleHQzKTtcbiAgbGV0dGVyLXNwYWNpbmc6IDAuMDZlbTtcbiAgdGV4dC10cmFuc2Zvcm06IHVwcGVyY2FzZTtcbiAgbWFyZ2luLWJvdHRvbTogMTRweDtcbn1cblxuLnNjb3JlLXJvdyB7XG4gIGRpc3BsYXk6IGZsZXg7XG4gIGFsaWduLWl0ZW1zOiBiYXNlbGluZTtcbiAgZ2FwOiA2cHg7XG4gIG1hcmdpbi1ib3R0b206IDEwcHg7XG4gIGZsZXgtd3JhcDogd3JhcDtcbn1cblxuLnNjb3JlLW51bSB7XG4gIGZvbnQtZmFtaWx5OiB2YXIoLS1mb250LWRpc3BsYXkpO1xuICBmb250LXNpemU6IDMycHg7XG4gIGZvbnQtd2VpZ2h0OiA3MDA7XG4gIGxpbmUtaGVpZ2h0OiAxO1xufVxuXG4uc2NvcmUtZGVub20ge1xuICBmb250LXNpemU6IDE0cHg7XG4gIGNvbG9yOiB2YXIoLS10ZXh0Myk7XG4gIG1hcmdpbi1yaWdodDogOHB4O1xufVxuXG4uc2NvcmUtYmFyLXdyYXAgeyBmbGV4OiAxOyBtaW4td2lkdGg6IDYwcHg7IH1cblxuLnNjb3JlLWJhci10cmFjayB7XG4gIGhlaWdodDogNnB4O1xuICBiYWNrZ3JvdW5kOiB2YXIoLS1zdXJmYWNlMyk7XG4gIGJvcmRlci1yYWRpdXM6IDNweDtcbiAgb3ZlcmZsb3c6IGhpZGRlbjtcbn1cblxuLnNjb3JlLWJhci1maWxsIHtcbiAgaGVpZ2h0OiAxMDAlO1xuICBib3JkZXItcmFkaXVzOiAzcHg7XG4gIHRyYW5zaXRpb246IHdpZHRoIDFzIGVhc2U7XG59XG5cbi5ldmFsLW5vdGVzIHtcbiAgZm9udC1zaXplOiAxMnB4O1xuICBjb2xvcjogdmFyKC0tdGV4dDIpO1xuICBtYXJnaW4tYm90dG9tOiA4cHg7XG4gIGxpbmUtaGVpZ2h0OiAxLjU7XG59XG5cbi5ldmFsLW1ldGEge1xuICBmb250LXNpemU6IDExcHg7XG4gIGNvbG9yOiB2YXIoLS10ZXh0Myk7XG4gIG1hcmdpbi1ib3R0b206IDhweDtcbn1cblxuLmV2YWwtaXNzdWVzIHtcbiAgZGlzcGxheTogZmxleDtcbiAgZmxleC1kaXJlY3Rpb246IGNvbHVtbjtcbiAgZ2FwOiA1cHg7XG4gIG1hcmdpbi10b3A6IDhweDtcbn1cblxuLmlzc3VlLWl0ZW0ge1xuICBkaXNwbGF5OiBmbGV4O1xuICBhbGlnbi1pdGVtczogZmxleC1zdGFydDtcbiAgZ2FwOiA2cHg7XG4gIGZvbnQtc2l6ZTogMTEuNXB4O1xuICBjb2xvcjogdmFyKC0tcGFydGlhbCk7XG59XG5cbi5pc3N1ZS1pdGVtIHN2ZyB7IGZsZXgtc2hyaW5rOiAwOyBtYXJnaW4tdG9wOiAxcHg7IH1cblxuLmNvdmVyYWdlLWdyaWQge1xuICBkaXNwbGF5OiBmbGV4O1xuICBmbGV4LWRpcmVjdGlvbjogY29sdW1uO1xuICBnYXA6IDEwcHg7XG4gIG1hcmdpbi1ib3R0b206IDEycHg7XG59XG5cbi5jb3Ytcm93IHtcbiAgZGlzcGxheTogZmxleDtcbiAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAgZ2FwOiAxMHB4O1xufVxuXG4uY292LWxhYmVsIHsgZm9udC1zaXplOiAxMnB4OyBjb2xvcjogdmFyKC0tdGV4dDIpOyBtaW4td2lkdGg6IDEyMHB4OyB9XG5cbi5jb3YtdHJhY2sge1xuICBmbGV4OiAxO1xuICBoZWlnaHQ6IDZweDtcbiAgYmFja2dyb3VuZDogdmFyKC0tc3VyZmFjZTMpO1xuICBib3JkZXItcmFkaXVzOiAzcHg7XG4gIG92ZXJmbG93OiBoaWRkZW47XG59XG5cbi5jb3YtZmlsbCB7XG4gIGhlaWdodDogMTAwJTtcbiAgYm9yZGVyLXJhZGl1czogM3B4O1xuICB0cmFuc2l0aW9uOiB3aWR0aCAwLjhzIGVhc2U7XG59XG5cbi5jb3YtdmFsIHsgZm9udC1zaXplOiAxMnB4OyBmb250LXdlaWdodDogNjAwOyBtaW4td2lkdGg6IDM2cHg7IHRleHQtYWxpZ246IHJpZ2h0OyB9XG5cbi5jb3ZlcmFnZS1jb3VudHMge1xuICBkaXNwbGF5OiBmbGV4O1xuICBnYXA6IDE2cHg7XG4gIGZvbnQtc2l6ZTogMTFweDtcbiAgY29sb3I6IHZhcigtLXRleHQzKTtcbiAgZmxleC13cmFwOiB3cmFwO1xufVxuXG4uZW1wdHktc3RhdGUge1xuICBkaXNwbGF5OiBmbGV4O1xuICBmbGV4LWRpcmVjdGlvbjogY29sdW1uO1xuICBhbGlnbi1pdGVtczogY2VudGVyO1xuICBqdXN0aWZ5LWNvbnRlbnQ6IGNlbnRlcjtcbiAgZ2FwOiAxMnB4O1xuICBwYWRkaW5nOiA4MHB4O1xuICBjb2xvcjogdmFyKC0tdGV4dDMpO1xuICB0ZXh0LWFsaWduOiBjZW50ZXI7XG59XG5cbi5lbXB0eS1zdGF0ZSBoMiB7XG4gIGZvbnQtZmFtaWx5OiB2YXIoLS1mb250LWRpc3BsYXkpO1xuICBmb250LXNpemU6IDE4cHg7XG4gIGNvbG9yOiB2YXIoLS10ZXh0Mik7XG59XG4iXSwic291cmNlUm9vdCI6IiJ9 */</style><style>.app-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+.app-main {
+  flex: 1 1;
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.panel-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.panel-title {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: 0.02em;
+}
+
+.panel-body {
+  padding: 24px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.15s ease;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: #7c8dff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(108, 125, 255, 0.4);
+}
+
+.btn-primary:disabled {
+  background: var(--surface3);
+  color: var(--text3);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text2);
+  border: 1px solid var(--border);
+}
+
+.btn-ghost:hover {
+  background: var(--surface2);
+  color: var(--text);
+  border-color: var(--border2);
+}
+
+.input-field {
+  width: 100%;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: var(--text);
+  font-size: 13px;
+  transition: border-color 0.15s;
+}
+
+.input-field:focus {
+  border-color: var(--accent);
+  background: var(--surface3);
+}
+
+.input-field::placeholder {
+  color: var(--text3);
+}
+
+.label {
+  display: block;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 8px;
+}
+
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: 20px 0;
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(108, 125, 255, 0.3);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+.error-box {
+  background: rgba(248, 113, 113, 0.1);
+  border: 1px solid rgba(248, 113, 113, 0.3);
+  border-radius: 8px;
+  padding: 12px 16px;
+  color: #fca5a5;
+  font-size: 13px;
+}
+
+.success-box {
+  background: rgba(74, 222, 128, 0.1);
+  border: 1px solid rgba(74, 222, 128, 0.3);
+  border-radius: 8px;
+  padding: 12px 16px;
+  color: #86efac;
+  font-size: 13px;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8uL3NyYy9BcHAuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0UsYUFBYTtFQUNiLHNCQUFzQjtFQUN0QixpQkFBaUI7RUFDakIscUJBQXFCO0FBQ3ZCOztBQUVBO0VBQ0UsU0FBTztFQUNQLGlCQUFpQjtFQUNqQixXQUFXO0VBQ1gsY0FBYztFQUNkLGtCQUFrQjtBQUNwQjs7QUFFQTtFQUNFLDBCQUEwQjtFQUMxQiwrQkFBK0I7RUFDL0IsbUJBQW1CO0VBQ25CLGdCQUFnQjtBQUNsQjs7QUFFQTtFQUNFLGtCQUFrQjtFQUNsQixzQ0FBc0M7RUFDdEMsYUFBYTtFQUNiLG1CQUFtQjtFQUNuQiw4QkFBOEI7QUFDaEM7O0FBRUE7RUFDRSxnQ0FBZ0M7RUFDaEMsZUFBZTtFQUNmLGdCQUFnQjtFQUNoQixrQkFBa0I7RUFDbEIsc0JBQXNCO0FBQ3hCOztBQUVBO0VBQ0UsYUFBYTtBQUNmOztBQUVBO0VBQ0Usb0JBQW9CO0VBQ3BCLG1CQUFtQjtFQUNuQixRQUFRO0VBQ1Isa0JBQWtCO0VBQ2xCLGtCQUFrQjtFQUNsQixlQUFlO0VBQ2YsZ0JBQWdCO0VBQ2hCLDBCQUEwQjtBQUM1Qjs7QUFFQTtFQUNFLHlCQUF5QjtFQUN6QixXQUFXO0FBQ2I7O0FBRUE7RUFDRSxtQkFBbUI7RUFDbkIsMkJBQTJCO0VBQzNCLCtDQUErQztBQUNqRDs7QUFFQTtFQUNFLDJCQUEyQjtFQUMzQixtQkFBbUI7RUFDbkIsbUJBQW1CO0VBQ25CLGVBQWU7RUFDZixnQkFBZ0I7QUFDbEI7O0FBRUE7RUFDRSx1QkFBdUI7RUFDdkIsbUJBQW1CO0VBQ25CLCtCQUErQjtBQUNqQzs7QUFFQTtFQUNFLDJCQUEyQjtFQUMzQixrQkFBa0I7RUFDbEIsNEJBQTRCO0FBQzlCOztBQUVBO0VBQ0UsV0FBVztFQUNYLDJCQUEyQjtFQUMzQiwrQkFBK0I7RUFDL0Isa0JBQWtCO0VBQ2xCLGtCQUFrQjtFQUNsQixrQkFBa0I7RUFDbEIsZUFBZTtFQUNmLDhCQUE4QjtBQUNoQzs7QUFFQTtFQUNFLDJCQUEyQjtFQUMzQiwyQkFBMkI7QUFDN0I7O0FBRUE7RUFDRSxtQkFBbUI7QUFDckI7O0FBRUE7RUFDRSxjQUFjO0VBQ2QsZUFBZTtFQUNmLGdCQUFnQjtFQUNoQixzQkFBc0I7RUFDdEIseUJBQXlCO0VBQ3pCLG1CQUFtQjtFQUNuQixrQkFBa0I7QUFDcEI7O0FBRUE7RUFDRSxXQUFXO0VBQ1gseUJBQXlCO0VBQ3pCLGNBQWM7QUFDaEI7O0FBRUE7RUFDRSxXQUFXO0VBQ1gsWUFBWTtFQUNaLDBDQUEwQztFQUMxQywrQkFBK0I7RUFDL0Isa0JBQWtCO0VBQ2xCLG9DQUFvQztBQUN0Qzs7QUFFQTtFQUNFLG9DQUFvQztFQUNwQywwQ0FBMEM7RUFDMUMsa0JBQWtCO0VBQ2xCLGtCQUFrQjtFQUNsQixjQUFjO0VBQ2QsZUFBZTtBQUNqQjs7QUFFQTtFQUNFLG1DQUFtQztFQUNuQyx5Q0FBeUM7RUFDekMsa0JBQWtCO0VBQ2xCLGtCQUFrQjtFQUNsQixjQUFjO0VBQ2QsZUFBZTtBQUNqQjs7QUFFQTtFQUNFLG9CQUFvQjtFQUNwQixtQkFBbUI7RUFDbkIsaUJBQWlCO0VBQ2pCLG1CQUFtQjtFQUNuQixlQUFlO0VBQ2YsZ0JBQWdCO0FBQ2xCIiwic291cmNlc0NvbnRlbnQiOlsiLmFwcC1zaGVsbCB7XG4gIGRpc3BsYXk6IGZsZXg7XG4gIGZsZXgtZGlyZWN0aW9uOiBjb2x1bW47XG4gIG1pbi1oZWlnaHQ6IDEwMHZoO1xuICBiYWNrZ3JvdW5kOiB2YXIoLS1iZyk7XG59XG5cbi5hcHAtbWFpbiB7XG4gIGZsZXg6IDE7XG4gIG1heC13aWR0aDogMTQwMHB4O1xuICB3aWR0aDogMTAwJTtcbiAgbWFyZ2luOiAwIGF1dG87XG4gIHBhZGRpbmc6IDMycHggMjRweDtcbn1cblxuLnBhbmVsIHtcbiAgYmFja2dyb3VuZDogdmFyKC0tc3VyZmFjZSk7XG4gIGJvcmRlcjogMXB4IHNvbGlkIHZhcigtLWJvcmRlcik7XG4gIGJvcmRlci1yYWRpdXM6IDEycHg7XG4gIG92ZXJmbG93OiBoaWRkZW47XG59XG5cbi5wYW5lbC1oZWFkZXIge1xuICBwYWRkaW5nOiAyMHB4IDI0cHg7XG4gIGJvcmRlci1ib3R0b206IDFweCBzb2xpZCB2YXIoLS1ib3JkZXIpO1xuICBkaXNwbGF5OiBmbGV4O1xuICBhbGlnbi1pdGVtczogY2VudGVyO1xuICBqdXN0aWZ5LWNvbnRlbnQ6IHNwYWNlLWJldHdlZW47XG59XG5cbi5wYW5lbC10aXRsZSB7XG4gIGZvbnQtZmFtaWx5OiB2YXIoLS1mb250LWRpc3BsYXkpO1xuICBmb250LXNpemU6IDE1cHg7XG4gIGZvbnQtd2VpZ2h0OiA2MDA7XG4gIGNvbG9yOiB2YXIoLS10ZXh0KTtcbiAgbGV0dGVyLXNwYWNpbmc6IDAuMDJlbTtcbn1cblxuLnBhbmVsLWJvZHkge1xuICBwYWRkaW5nOiAyNHB4O1xufVxuXG4uYnRuIHtcbiAgZGlzcGxheTogaW5saW5lLWZsZXg7XG4gIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gIGdhcDogOHB4O1xuICBwYWRkaW5nOiAxMHB4IDIwcHg7XG4gIGJvcmRlci1yYWRpdXM6IDhweDtcbiAgZm9udC1zaXplOiAxM3B4O1xuICBmb250LXdlaWdodDogNTAwO1xuICB0cmFuc2l0aW9uOiBhbGwgMC4xNXMgZWFzZTtcbn1cblxuLmJ0bi1wcmltYXJ5IHtcbiAgYmFja2dyb3VuZDogdmFyKC0tYWNjZW50KTtcbiAgY29sb3I6ICNmZmY7XG59XG5cbi5idG4tcHJpbWFyeTpob3ZlciB7XG4gIGJhY2tncm91bmQ6ICM3YzhkZmY7XG4gIHRyYW5zZm9ybTogdHJhbnNsYXRlWSgtMXB4KTtcbiAgYm94LXNoYWRvdzogMCA0cHggMTJweCByZ2JhKDEwOCwgMTI1LCAyNTUsIDAuNCk7XG59XG5cbi5idG4tcHJpbWFyeTpkaXNhYmxlZCB7XG4gIGJhY2tncm91bmQ6IHZhcigtLXN1cmZhY2UzKTtcbiAgY29sb3I6IHZhcigtLXRleHQzKTtcbiAgY3Vyc29yOiBub3QtYWxsb3dlZDtcbiAgdHJhbnNmb3JtOiBub25lO1xuICBib3gtc2hhZG93OiBub25lO1xufVxuXG4uYnRuLWdob3N0IHtcbiAgYmFja2dyb3VuZDogdHJhbnNwYXJlbnQ7XG4gIGNvbG9yOiB2YXIoLS10ZXh0Mik7XG4gIGJvcmRlcjogMXB4IHNvbGlkIHZhcigtLWJvcmRlcik7XG59XG5cbi5idG4tZ2hvc3Q6aG92ZXIge1xuICBiYWNrZ3JvdW5kOiB2YXIoLS1zdXJmYWNlMik7XG4gIGNvbG9yOiB2YXIoLS10ZXh0KTtcbiAgYm9yZGVyLWNvbG9yOiB2YXIoLS1ib3JkZXIyKTtcbn1cblxuLmlucHV0LWZpZWxkIHtcbiAgd2lkdGg6IDEwMCU7XG4gIGJhY2tncm91bmQ6IHZhcigtLXN1cmZhY2UyKTtcbiAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tYm9yZGVyKTtcbiAgYm9yZGVyLXJhZGl1czogOHB4O1xuICBwYWRkaW5nOiAxMHB4IDE0cHg7XG4gIGNvbG9yOiB2YXIoLS10ZXh0KTtcbiAgZm9udC1zaXplOiAxM3B4O1xuICB0cmFuc2l0aW9uOiBib3JkZXItY29sb3IgMC4xNXM7XG59XG5cbi5pbnB1dC1maWVsZDpmb2N1cyB7XG4gIGJvcmRlci1jb2xvcjogdmFyKC0tYWNjZW50KTtcbiAgYmFja2dyb3VuZDogdmFyKC0tc3VyZmFjZTMpO1xufVxuXG4uaW5wdXQtZmllbGQ6OnBsYWNlaG9sZGVyIHtcbiAgY29sb3I6IHZhcigtLXRleHQzKTtcbn1cblxuLmxhYmVsIHtcbiAgZGlzcGxheTogYmxvY2s7XG4gIGZvbnQtc2l6ZTogMTFweDtcbiAgZm9udC13ZWlnaHQ6IDUwMDtcbiAgbGV0dGVyLXNwYWNpbmc6IDAuMDhlbTtcbiAgdGV4dC10cmFuc2Zvcm06IHVwcGVyY2FzZTtcbiAgY29sb3I6IHZhcigtLXRleHQzKTtcbiAgbWFyZ2luLWJvdHRvbTogOHB4O1xufVxuXG4uZGl2aWRlciB7XG4gIGhlaWdodDogMXB4O1xuICBiYWNrZ3JvdW5kOiB2YXIoLS1ib3JkZXIpO1xuICBtYXJnaW46IDIwcHggMDtcbn1cblxuLnNwaW5uZXIge1xuICB3aWR0aDogMTZweDtcbiAgaGVpZ2h0OiAxNnB4O1xuICBib3JkZXI6IDJweCBzb2xpZCByZ2JhKDEwOCwgMTI1LCAyNTUsIDAuMyk7XG4gIGJvcmRlci10b3AtY29sb3I6IHZhcigtLWFjY2VudCk7XG4gIGJvcmRlci1yYWRpdXM6IDUwJTtcbiAgYW5pbWF0aW9uOiBzcGluIDAuN3MgbGluZWFyIGluZmluaXRlO1xufVxuXG4uZXJyb3ItYm94IHtcbiAgYmFja2dyb3VuZDogcmdiYSgyNDgsIDExMywgMTEzLCAwLjEpO1xuICBib3JkZXI6IDFweCBzb2xpZCByZ2JhKDI0OCwgMTEzLCAxMTMsIDAuMyk7XG4gIGJvcmRlci1yYWRpdXM6IDhweDtcbiAgcGFkZGluZzogMTJweCAxNnB4O1xuICBjb2xvcjogI2ZjYTVhNTtcbiAgZm9udC1zaXplOiAxM3B4O1xufVxuXG4uc3VjY2Vzcy1ib3gge1xuICBiYWNrZ3JvdW5kOiByZ2JhKDc0LCAyMjIsIDEyOCwgMC4xKTtcbiAgYm9yZGVyOiAxcHggc29saWQgcmdiYSg3NCwgMjIyLCAxMjgsIDAuMyk7XG4gIGJvcmRlci1yYWRpdXM6IDhweDtcbiAgcGFkZGluZzogMTJweCAxNnB4O1xuICBjb2xvcjogIzg2ZWZhYztcbiAgZm9udC1zaXplOiAxM3B4O1xufVxuXG4udGFnIHtcbiAgZGlzcGxheTogaW5saW5lLWZsZXg7XG4gIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gIHBhZGRpbmc6IDNweCAxMHB4O1xuICBib3JkZXItcmFkaXVzOiAyMHB4O1xuICBmb250LXNpemU6IDExcHg7XG4gIGZvbnQtd2VpZ2h0OiA1MDA7XG59XG4iXSwic291cmNlUm9vdCI6IiJ9 */</style></head>
+  <body>
+    <div id="root"><div class="app-shell"><header class="header"><div class="header-inner"><div class="header-brand"><div class="brand-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shield"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path></svg></div><span class="brand-name">ControlMapper</span><span class="brand-tag">v1.0</span></div><nav class="header-nav"><button class="nav-tab "><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shield"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path></svg>Ingest</button><button class="nav-tab active"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-git-merge"><circle cx="18" cy="18" r="3"></circle><circle cx="6" cy="6" r="3"></circle><path d="M6 21V9a9 9 0 0 0 9 9"></path></svg>Results</button><button class="nav-tab "><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chart-column"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path><path d="M18 17V9"></path><path d="M13 17V5"></path><path d="M8 17v-3"></path></svg>Evaluations</button></nav></div></header><main class="app-main"><div class="results-layout"><div class="stats-bar"><div class="stat-tile"><div class="stat-value">84</div><div class="stat-label">Source Controls</div><div class="stat-sub">16 matched</div></div><div class="stat-tile"><div class="stat-value">51</div><div class="stat-label">Base Controls</div><div class="stat-sub">13 matched</div></div><div class="stat-tile"><div class="stat-value" style="color: var(--full);">1</div><div class="stat-label">Full Matches</div></div><div class="stat-tile"><div class="stat-value" style="color: var(--partial);">15</div><div class="stat-label">Partial Matches</div></div><div class="stat-tile"><div class="stat-value" style="color: var(--partial);">25.5%</div><div class="stat-label">Coverage</div></div><div class="stat-tile coverage-bar-tile"><div class="stat-label" style="margin-bottom: 8px;">Base Control Coverage</div><div class="coverage-track"><div class="coverage-fill" style="width: 25.5%; background: var(--partial);"></div></div><div class="stat-sub">13 of 51 base controls matched</div></div></div><div class="domain-filter-row"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-filter filter-icon"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg><span class="filter-label">Domain:</span><div class="domain-pills"><button class="domain-pill active">All</button><button class="domain-pill ">Access Control</button><button class="domain-pill ">Business Continuity</button><button class="domain-pill ">Data Protection</button><button class="domain-pill ">Encryption</button><button class="domain-pill ">General</button><button class="domain-pill ">Incident Response</button><button class="domain-pill ">Logging</button><button class="domain-pill ">Monitoring</button><button class="domain-pill ">Network Security</button></div></div><section class="results-section"><div class="section-header"><span class="section-title">Matched Controls</span><span class="section-count">16</span></div><div class="mapping-list"><div class="mapping-card match-partial"><button class="mapping-header"><div class="mapping-ids"><span class="id-list source-ids"><span class="id-chip tc">TC-2</span></span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right arrow"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg><span class="id-list base-ids"><span class="id-chip base">CC 5.2, CC 6.1, CC 6.2, CC 6.3</span></span></div><div class="mapping-meta"><span class="badge badge-partial"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-alert"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg>partial</span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down"><path d="m6 9 6 6 6-6"></path></svg></div></button><div class="mapping-detail fade-in"><div class="detail-grid"><div class="detail-col"><div class="detail-col-label">Source Controls</div><div class="control-card"><div class="control-card-header"><span class="badge badge-tc">Trust Center</span><span class="ctrl-id">TC-2</span><span class="ctrl-domain">Access Control</span></div><p class="control-text">Systematic controls are established in the access management policy for managing user access rights, ensuring appropriate, authorized access to systems and data.</p></div></div><div class="detail-divider"></div><div class="detail-col"><div class="detail-col-label">Normalized Common Controls</div><div class="control-card base-card"><div class="control-card-header"><span class="badge" style="background: rgba(255, 255, 255, 0.06); color: var(--text2); border: 1px solid var(--border);">Base</span><span class="ctrl-id">CC 5.2, CC 6.1, CC 6.2, CC 6.3</span><span class="ctrl-domain">General</span></div><p class="control-text">The company's access control policy documents the requirements for the following access control functions: 
+- adding new users;
+- modifying users; and/or 
+- removing an existing user's access.</p></div></div></div><div class="rationale-box"><span class="rationale-label">Rationale</span><p>Semantic similarity match (max cosine similarity: 0.74)</p></div></div></div><div class="mapping-card match-partial"><button class="mapping-header"><div class="mapping-ids"><span class="id-list source-ids"><span class="id-chip tc">TC-18</span></span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right arrow"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg><span class="id-list base-ids"><span class="id-chip base">CC 6.6, CC 6.7</span></span></div><div class="mapping-meta"><span class="badge badge-partial"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-alert"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg>partial</span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down"><path d="m6 9 6 6 6-6"></path></svg></div></button><div class="mapping-detail fade-in"><div class="detail-grid"><div class="detail-col"><div class="detail-col-label">Source Controls</div><div class="control-card"><div class="control-card-header"><span class="badge badge-tc">Trust Center</span><span class="ctrl-id">TC-18</span><span class="ctrl-domain">Encryption</span></div><p class="control-text">All data is encrypted when transmitted over networks, both within the organization's internal network and external connections.</p></div></div><div class="detail-divider"></div><div class="detail-col"><div class="detail-col-label">Normalized Common Controls</div><div class="control-card base-card"><div class="control-card-header"><span class="badge" style="background: rgba(255, 255, 255, 0.06); color: var(--text2); border: 1px solid var(--border);">Base</span><span class="ctrl-id">CC 6.6, CC 6.7</span><span class="ctrl-domain">General</span></div><p class="control-text">The company uses secure data transmission protocols to encrypt confidential and sensitive data when transmitted over public networks.</p></div></div></div><div class="rationale-box"><span class="rationale-label">Rationale</span><p>Semantic similarity match (max cosine similarity: 0.70)</p></div></div></div><div class="mapping-card match-partial"><button class="mapping-header"><div class="mapping-ids"><span class="id-list source-ids"><span class="id-chip tc">TC-21</span></span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right arrow"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg><span class="id-list base-ids"><span class="id-chip base">CC 6.1</span></span></div><div class="mapping-meta"><span class="badge badge-partial"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-alert"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg>partial</span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down"><path d="m6 9 6 6 6-6"></path></svg></div></button><div class="mapping-detail fade-in"><div class="detail-grid"><div class="detail-col"><div class="detail-col-label">Source Controls</div><div class="control-card"><div class="control-card-header"><span class="badge badge-tc">Trust Center</span><span class="ctrl-id">TC-21</span><span class="ctrl-domain">Access Control</span></div><p class="control-text">All data is labeled based on its classification level. This ensures that appropriate access controls and handling procedures are applied to protect information.</p></div></div><div class="detail-divider"></div><div class="detail-col"><div class="detail-col-label">Normalized Common Controls</div><div class="control-card base-card"><div class="control-card-header"><span class="badge" style="background: rgba(255, 255, 255, 0.06); color: var(--text2); border: 1px solid var(--border);">Base</span><span class="ctrl-id">CC 6.1</span><span class="ctrl-domain">General</span></div><p class="control-text">The company has a data classification policy in place to help ensure that confidential data is properly secured and restricted to authorized personnel.</p></div></div></div><div class="rationale-box"><span class="rationale-label">Rationale</span><p>Semantic similarity match (max cosine similarity: 0.74)</p></div></div></div><div class="mapping-card match-partial"><button class="mapping-header"><div class="mapping-ids"><span class="id-list source-ids"><span class="id-chip tc">TC-22</span></span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right arrow"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg><span class="id-list base-ids"><span class="id-chip base">CC 5.3, CC 6.5</span></span></div><div class="mapping-meta"><span class="badge badge-partial"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-alert"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg>partial</span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down"><path d="m6 9 6 6 6-6"></path></svg></div></button><div class="mapping-detail fade-in"><div class="detail-grid"><div class="detail-col"><div class="detail-col-label">Source Controls</div><div class="control-card"><div class="control-card-header"><span class="badge badge-tc">Trust Center</span><span class="ctrl-id">TC-22</span><span class="ctrl-domain">Data Protection</span></div><p class="control-text">Data management and retention policy established</p></div></div><div class="detail-divider"></div><div class="detail-col"><div class="detail-col-label">Normalized Common Controls</div><div class="control-card base-card"><div class="control-card-header"><span class="badge" style="background: rgba(255, 255, 255, 0.06); color: var(--text2); border: 1px solid var(--border);">Base</span><span class="ctrl-id">CC 5.3, CC 6.5</span><span class="ctrl-domain">General</span></div><p class="control-text">The company has formal retention and disposal procedures in place to guide the secure retention and disposal of company and customer data.</p></div></div></div><div class="rationale-box"><span class="rationale-label">Rationale</span><p>Semantic similarity match (max cosine similarity: 0.67)</p></div></div></div><div class="mapping-card match-partial"><button class="mapping-header"><div class="mapping-ids"><span class="id-list source-ids"><span class="id-chip tc">TC-23</span></span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right arrow"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg><span class="id-list base-ids"><span class="id-chip base">CC 5.3, CC 6.5</span></span></div><div class="mapping-meta"><span class="badge badge-partial"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-alert"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg>partial</span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down"><path d="m6 9 6 6 6-6"></path></svg></div></button><div class="mapping-detail fade-in"><div class="detail-grid"><div class="detail-col"><div class="detail-col-label">Source Controls</div><div class="control-card"><div class="control-card-header"><span class="badge badge-tc">Trust Center</span><span class="ctrl-id">TC-23</span><span class="ctrl-domain">Data Protection</span></div><p class="control-text">A data management and retention policy is established, outlining guidelines for how long data should be retained and how it should be managed throughout its lifecycle.</p></div></div><div class="detail-divider"></div><div class="detail-col"><div class="detail-col-label">Normalized Common Controls</div><div class="control-card base-card"><div class="control-card-header"><span class="badge" style="background: rgba(255, 255, 255, 0.06); color: var(--text2); border: 1px solid var(--border);">Base</span><span class="ctrl-id">CC 5.3, CC 6.5</span><span class="ctrl-domain">General</span></div><p class="control-text">The company has formal retention and disposal procedures in place to guide the secure retention and disposal of company and customer data.</p></div></div></div><div class="rationale-box"><span class="rationale-label">Rationale</span><p>Semantic similarity match (max cosine similarity: 0.67)</p></div></div></div><div class="mapping-card match-partial"><button class="mapping-header"><div class="mapping-ids"><span class="id-list source-ids"><span class="id-chip tc">TC-33</span></span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right arrow"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg><span class="id-list base-ids"><span class="id-chip base">CC 6.7</span></span></div><div class="mapping-meta"><span class="badge badge-partial"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-alert"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg>partial</span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down"><path d="m6 9 6 6 6-6"></path></svg></div></button><div class="mapping-detail fade-in"><div class="detail-grid"><div class="detail-col"><div class="detail-col-label">Source Controls</div><div class="control-card"><div class="control-card-header"><span class="badge badge-tc">Trust Center</span><span class="ctrl-id">TC-33</span><span class="ctrl-domain">Encryption</span></div><p class="control-text">Data stored on end-user devices (e.g., laptops, mobile devices) is encrypted to protect it in case of device loss or theft.</p></div></div><div class="detail-divider"></div><div class="detail-col"><div class="detail-col-label">Normalized Common Controls</div><div class="control-card base-card"><div class="control-card-header"><span class="badge" style="background: rgba(255, 255, 255, 0.06); color: var(--text2); border: 1px solid var(--border);">Base</span><span class="ctrl-id">CC 6.7</span><span class="ctrl-domain">General</span></div><p class="control-text">The company encrypts portable and removable media devices when used.</p></div></div></div><div class="rationale-box"><span class="rationale-label">Rationale</span><p>Semantic similarity match (max cosine similarity: 0.68)</p></div></div></div><div class="mapping-card match-full"><button class="mapping-header"><div class="mapping-ids"><span class="id-list source-ids"><span class="id-chip tc">TC-34</span></span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right arrow"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg><span class="id-list base-ids"><span class="id-chip base">CC 6.7</span></span></div><div class="mapping-meta"><span class="badge badge-full"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>full</span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down"><path d="m6 9 6 6 6-6"></path></svg></div></button><div class="mapping-detail fade-in"><div class="detail-grid"><div class="detail-col"><div class="detail-col-label">Source Controls</div><div class="control-card"><div class="control-card-header"><span class="badge badge-tc">Trust Center</span><span class="ctrl-id">TC-34</span><span class="ctrl-domain">General</span></div><p class="control-text">A mobile device management (MDM) solution is used to manage and secure end-user devices.</p></div></div><div class="detail-divider"></div><div class="detail-col"><div class="detail-col-label">Normalized Common Controls</div><div class="control-card base-card"><div class="control-card-header"><span class="badge" style="background: rgba(255, 255, 255, 0.06); color: var(--text2); border: 1px solid var(--border);">Base</span><span class="ctrl-id">CC 6.7</span><span class="ctrl-domain">General</span></div><p class="control-text">The company encrypts portable and removable media devices when used.</p></div></div></div><div class="rationale-box"><span class="rationale-label">Rationale</span><p>Semantic similarity match (max cosine similarity: 0.90)</p></div></div></div><div class="mapping-card match-partial"><button class="mapping-header"><div class="mapping-ids"><span class="id-list source-ids"><span class="id-chip tc">TC-47</span></span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right arrow"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg><span class="id-list base-ids"><span class="id-chip base">CC 2.1, CC 7.2</span></span></div><div class="mapping-meta"><span class="badge badge-partial"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-alert"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg>partial</span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down"><path d="m6 9 6 6 6-6"></path></svg></div></button><div class="mapping-detail fade-in"><div class="detail-grid"><div class="detail-col"><div class="detail-col-label">Source Controls</div><div class="control-card"><div class="control-card-header"><span class="badge badge-tc">Trust Center</span><span class="ctrl-id">TC-47</span><span class="ctrl-domain">Logging</span></div><p class="control-text">Maintain a robust and up-to-date audit log management process. This process should include guidelines for capturing, storing, and monitoring audit logs, ensuring the availability and integrity of essential security event data.</p></div></div><div class="detail-divider"></div><div class="detail-col"><div class="detail-col-label">Normalized Common Controls</div><div class="control-card base-card"><div class="control-card-header"><span class="badge" style="background: rgba(255, 255, 255, 0.06); color: var(--text2); border: 1px solid var(--border);">Base</span><span class="ctrl-id">CC 2.1, CC 7.2</span><span class="ctrl-domain">General</span></div><p class="control-text">The company utilizes a log management tool to identify events that may have a potential impact on the company's ability to achieve its security objectives.</p></div></div></div><div class="rationale-box"><span class="rationale-label">Rationale</span><p>Semantic similarity match (max cosine similarity: 0.67)</p></div></div></div><div class="mapping-card match-partial"><button class="mapping-header"><div class="mapping-ids"><span class="id-list source-ids"><span class="id-chip tc">TC-48</span></span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right arrow"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg><span class="id-list base-ids"><span class="id-chip base">CC 2.1, CC 7.2</span></span></div><div class="mapping-meta"><span class="badge badge-partial"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-alert"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg>partial</span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down"><path d="m6 9 6 6 6-6"></path></svg></div></button><div class="mapping-detail fade-in"><div class="detail-grid"><div class="detail-col"><div class="detail-col-label">Source Controls</div><div class="control-card"><div class="control-card-header"><span class="badge badge-tc">Trust Center</span><span class="ctrl-id">TC-48</span><span class="ctrl-domain">Logging</span></div><p class="control-text">Enable the collection of audit logs from critical systems and applications. Audit logs capture essential security events and activities, providing valuable information for incident detection, investigation, and compliance purposes.</p></div></div><div class="detail-divider"></div><div class="detail-col"><div class="detail-col-label">Normalized Common Controls</div><div class="control-card base-card"><div class="control-card-header"><span class="badge" style="background: rgba(255, 255, 255, 0.06); color: var(--text2); border: 1px solid var(--border);">Base</span><span class="ctrl-id">CC 2.1, CC 7.2</span><span class="ctrl-domain">General</span></div><p class="control-text">The company utilizes a log management tool to identify events that may have a potential impact on the company's ability to achieve its security objectives.</p></div></div></div><div class="rationale-box"><span class="rationale-label">Rationale</span><p>Semantic similarity match (max cosine similarity: 0.66)</p></div></div></div><div class="mapping-card match-partial"><button class="mapping-header"><div class="mapping-ids"><span class="id-list source-ids"><span class="id-chip tc">TC-52</span></span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right arrow"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg><span class="id-list base-ids"><span class="id-chip base">CC 7.2</span></span></div><div class="mapping-meta"><span class="badge badge-partial"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-alert"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg>partial</span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down"><path d="m6 9 6 6 6-6"></path></svg></div></button><div class="mapping-detail fade-in"><div class="detail-grid"><div class="detail-col"><div class="detail-col-label">Source Controls</div><div class="control-card"><div class="control-card-header"><span class="badge badge-tc">Trust Center</span><span class="ctrl-id">TC-52</span><span class="ctrl-domain">Monitoring</span></div><p class="control-text">The performance of the organization's infrastructure components is monitored to detect potential issues or anomalies that may impact security or reliability.</p></div></div><div class="detail-divider"></div><div class="detail-col"><div class="detail-col-label">Normalized Common Controls</div><div class="control-card base-card"><div class="control-card-header"><span class="badge" style="background: rgba(255, 255, 255, 0.06); color: var(--text2); border: 1px solid var(--border);">Base</span><span class="ctrl-id">CC 7.2</span><span class="ctrl-domain">General</span></div><p class="control-text">An infrastructure monitoring tool is utilized to monitor systems, infrastructure, and performance and generates alerts when specific predefined thresholds are met.</p></div></div></div><div class="rationale-box"><span class="rationale-label">Rationale</span><p>Semantic similarity match (max cosine similarity: 0.70)</p></div></div></div><div class="mapping-card match-partial"><button class="mapping-header"><div class="mapping-ids"><span class="id-list source-ids"><span class="id-chip tc">TC-53</span></span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right arrow"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg><span class="id-list base-ids"><span class="id-chip base">CC 2.1, CC 7.2</span></span></div><div class="mapping-meta"><span class="badge badge-partial"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-alert"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg>partial</span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down"><path d="m6 9 6 6 6-6"></path></svg></div></button><div class="mapping-detail fade-in"><div class="detail-grid"><div class="detail-col"><div class="detail-col-label">Source Controls</div><div class="control-card"><div class="control-card-header"><span class="badge badge-tc">Trust Center</span><span class="ctrl-id">TC-53</span><span class="ctrl-domain">Logging</span></div><p class="control-text">Implement a centralized log management solution to collect, store, and analyze logs from various systems and applications. Centralized log management simplifies log review, correlation, and monitoring for potential security incidents.</p></div></div><div class="detail-divider"></div><div class="detail-col"><div class="detail-col-label">Normalized Common Controls</div><div class="control-card base-card"><div class="control-card-header"><span class="badge" style="background: rgba(255, 255, 255, 0.06); color: var(--text2); border: 1px solid var(--border);">Base</span><span class="ctrl-id">CC 2.1, CC 7.2</span><span class="ctrl-domain">General</span></div><p class="control-text">The company utilizes a log management tool to identify events that may have a potential impact on the company's ability to achieve its security objectives.</p></div></div></div><div class="rationale-box"><span class="rationale-label">Rationale</span><p>Semantic similarity match (max cosine similarity: 0.66)</p></div></div></div><div class="mapping-card match-partial"><button class="mapping-header"><div class="mapping-ids"><span class="id-list source-ids"><span class="id-chip tc">TC-64</span></span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right arrow"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg><span class="id-list base-ids"><span class="id-chip base">CC 6.1, CC 6.6</span><span class="id-chip base">CC 6.1, CC 6.6</span></span></div><div class="mapping-meta"><span class="badge badge-partial"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-alert"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg>partial</span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down"><path d="m6 9 6 6 6-6"></path></svg></div></button><div class="mapping-detail fade-in"><div class="detail-grid"><div class="detail-col"><div class="detail-col-label">Source Controls</div><div class="control-card"><div class="control-card-header"><span class="badge badge-tc">Trust Center</span><span class="ctrl-id">TC-64</span><span class="ctrl-domain">Access Control</span></div><p class="control-text">Physical access to the organization's facilities, equipment, and systems is restricted to authorized personnel only.</p></div></div><div class="detail-divider"></div><div class="detail-col"><div class="detail-col-label">Normalized Common Controls</div><div class="control-card base-card"><div class="control-card-header"><span class="badge" style="background: rgba(255, 255, 255, 0.06); color: var(--text2); border: 1px solid var(--border);">Base</span><span class="ctrl-id">CC 6.1, CC 6.6</span><span class="ctrl-domain">General</span></div><p class="control-text">The company's production systems can only be remotely accessed by authorized employees possessing a valid multi-factor authentication (MFA) method.</p></div><div class="control-card base-card"><div class="control-card-header"><span class="badge" style="background: rgba(255, 255, 255, 0.06); color: var(--text2); border: 1px solid var(--border);">Base</span><span class="ctrl-id">CC 6.1, CC 6.6</span><span class="ctrl-domain">General</span></div><p class="control-text">The company's production systems can only be remotely accessed by authorized employees possessing a valid multi-factor authentication (MFA) method.</p></div></div></div><div class="rationale-box"><span class="rationale-label">Rationale</span><p>Semantic similarity match (max cosine similarity: 0.70)</p></div></div></div><div class="mapping-card match-partial"><button class="mapping-header"><div class="mapping-ids"><span class="id-list source-ids"><span class="id-chip tc">TC-68</span></span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right arrow"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg><span class="id-list base-ids"><span class="id-chip base">CC 1.4, CC 2.2</span></span></div><div class="mapping-meta"><span class="badge badge-partial"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-alert"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg>partial</span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down"><path d="m6 9 6 6 6-6"></path></svg></div></button><div class="mapping-detail fade-in"><div class="detail-grid"><div class="detail-col"><div class="detail-col-label">Source Controls</div><div class="control-card"><div class="control-card-header"><span class="badge badge-tc">Trust Center</span><span class="ctrl-id">TC-68</span><span class="ctrl-domain">Data Protection</span></div><p class="control-text">Security awareness training is conducted annually for all employees, covering cybersecurity threats, social engineering, authentication best practices, and handling of sensitive data.</p></div></div><div class="detail-divider"></div><div class="detail-col"><div class="detail-col-label">Normalized Common Controls</div><div class="control-card base-card"><div class="control-card-header"><span class="badge" style="background: rgba(255, 255, 255, 0.06); color: var(--text2); border: 1px solid var(--border);">Base</span><span class="ctrl-id">CC 1.4, CC 2.2</span><span class="ctrl-domain">General</span></div><p class="control-text">The company requires employees to complete security awareness training within thirty days of hire and at least annually thereafter.</p></div></div></div><div class="rationale-box"><span class="rationale-label">Rationale</span><p>Semantic similarity match (max cosine similarity: 0.71)</p></div></div></div><div class="mapping-card match-partial"><button class="mapping-header"><div class="mapping-ids"><span class="id-list source-ids"><span class="id-chip tc">TC-73</span></span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right arrow"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg><span class="id-list base-ids"><span class="id-chip base">CC 3.1, CC 3.2, CC 3.3, CC 3.4, CC 5.1, CC 5.3, CC 9.1</span><span class="id-chip base">CC 3.1, CC 5.3</span></span></div><div class="mapping-meta"><span class="badge badge-partial"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-alert"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg>partial</span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down"><path d="m6 9 6 6 6-6"></path></svg></div></button><div class="mapping-detail fade-in"><div class="detail-grid"><div class="detail-col"><div class="detail-col-label">Source Controls</div><div class="control-card"><div class="control-card-header"><span class="badge badge-tc">Trust Center</span><span class="ctrl-id">TC-73</span><span class="ctrl-domain">General</span></div><p class="control-text">A risk management policy is established that outlines the organization's approach to identifying, assessing, and mitigatin</p></div></div><div class="detail-divider"></div><div class="detail-col"><div class="detail-col-label">Normalized Common Controls</div><div class="control-card base-card"><div class="control-card-header"><span class="badge" style="background: rgba(255, 255, 255, 0.06); color: var(--text2); border: 1px solid var(--border);">Base</span><span class="ctrl-id">CC 3.1, CC 3.2, CC 3.3, CC 3.4, CC 5.1, CC 5.3, CC 9.1</span><span class="ctrl-domain">General</span></div><p class="control-text">The company has a documented risk management program in place that includes guidance on the identification of potential threats, rating the significance of the risks associated with the identified threats, and mitigation strategies for those risks.</p></div><div class="control-card base-card"><div class="control-card-header"><span class="badge" style="background: rgba(255, 255, 255, 0.06); color: var(--text2); border: 1px solid var(--border);">Base</span><span class="ctrl-id">CC 3.1, CC 5.3</span><span class="ctrl-domain">General</span></div><p class="control-text">The company specifies its objectives to enable the identification and assessment of risk related to the objectives.</p></div></div></div><div class="rationale-box"><span class="rationale-label">Rationale</span><p>Semantic similarity match (max cosine similarity: 0.74)</p></div></div></div><div class="mapping-card match-partial"><button class="mapping-header"><div class="mapping-ids"><span class="id-list source-ids"><span class="id-chip doc">DOC-8</span></span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right arrow"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg><span class="id-list base-ids"><span class="id-chip base">CC 2.2, CC 5.3, CC 7.3, CC 7.4, CC 7.5</span></span></div><div class="mapping-meta"><span class="badge badge-partial"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-alert"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg>partial</span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down"><path d="m6 9 6 6 6-6"></path></svg></div></button><div class="mapping-detail fade-in"><div class="detail-grid"><div class="detail-col"><div class="detail-col-label">Source Controls</div><div class="control-card"><div class="control-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">DOC-8</span><span class="ctrl-domain">Incident Response</span></div><p class="control-text">Incident response procedures are documented</p></div></div><div class="detail-divider"></div><div class="detail-col"><div class="detail-col-label">Normalized Common Controls</div><div class="control-card base-card"><div class="control-card-header"><span class="badge" style="background: rgba(255, 255, 255, 0.06); color: var(--text2); border: 1px solid var(--border);">Base</span><span class="ctrl-id">CC 2.2, CC 5.3, CC 7.3, CC 7.4, CC 7.5</span><span class="ctrl-domain">General</span></div><p class="control-text">The company has security and privacy incident response policies and procedures that are documented and communicated to authorized users.</p></div></div></div><div class="rationale-box"><span class="rationale-label">Rationale</span><p>Semantic similarity match (max cosine similarity: 0.66)</p></div></div></div><div class="mapping-card match-partial"><button class="mapping-header"><div class="mapping-ids"><span class="id-list source-ids"><span class="id-chip doc">DOC-9</span></span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right arrow"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg><span class="id-list base-ids"><span class="id-chip base">CC 7.3, CC 7.4, CC 7.5</span></span></div><div class="mapping-meta"><span class="badge badge-partial"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-alert"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg>partial</span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down"><path d="m6 9 6 6 6-6"></path></svg></div></button><div class="mapping-detail fade-in"><div class="detail-grid"><div class="detail-col"><div class="detail-col-label">Source Controls</div><div class="control-card"><div class="control-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">DOC-9</span><span class="ctrl-domain">Logging</span></div><p class="control-text">Security incidents are logged and tracked to resolution</p></div></div><div class="detail-divider"></div><div class="detail-col"><div class="detail-col-label">Normalized Common Controls</div><div class="control-card base-card"><div class="control-card-header"><span class="badge" style="background: rgba(255, 255, 255, 0.06); color: var(--text2); border: 1px solid var(--border);">Base</span><span class="ctrl-id">CC 7.3, CC 7.4, CC 7.5</span><span class="ctrl-domain">General</span></div><p class="control-text">The company's security and privacy incidents are logged, tracked, resolved, and communicated to affected or relevant parties by management according to the company's security incident response policy and procedures.</p></div></div></div><div class="rationale-box"><span class="rationale-label">Rationale</span><p>Semantic similarity match (max cosine similarity: 0.79)</p></div></div></div></div></section><section class="results-section"><div class="section-header"><span class="section-title">Unmatched Source Controls</span><span class="section-count unmatched">68</span></div><div class="unmatched-grid"><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-1</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Implement a formal access granting process that ensures new access privileges are assigned based on the principle of least privilege, and require at least one employee to endorse the granting of new access.</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-3</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Access requests to sensitive data required</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-4</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">To access sensitive data, employees must submit access requests that are approved and monitored.</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-5</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Access requests to sensitive infrastructure required</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-6</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">To access sensitive infrastructure components, employees must submit access requests that are approved and monitored. This control helps ensure that only authorized personnel can access critical infrastructure, minimizing potential risks.</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-7</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Implement a regular access review process to promptly remove access privileges from employees who no longer require them. This ensures that former employees or users do not retain unauthorized access to organizational resources.</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-8</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">An inventory of user accounts on critical and high-risk vendors that have access to in-scope systems and services is maintained, including essential details such as account owners, access privileges, associated roles, and vendor relationships where applicable. The inventory is reviewed and updated at least annually.</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-9</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Monitor for dormant user accounts and disable or remove accounts that have been inactive for an extended period.</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-10</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Employee access is reviewed at least annually to ensure that access privileges are appropriate and that former employees or users do not retain unauthorized access.</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-11</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Require multi-factor authentication (MFA) for administrative access to critical systems and services. MFA mitigates the risk of unauthorized administrative access and helps protect sensitive administrative functions.</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-12</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Require all externally-exposed enterprise or third-party applications to enforce MFA, where supported. Enforcing MFA through a directory service or SSO provider is a satisfactory implementation of this safeguard.</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-13</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Multi-factor authentication (MFA) is required for accessing critical services and infrastructure unless a documented exception is in place where MFA is not supported.</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-14</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Require multi-factor authentication (MFA) for accessing sensitive infrastructure. MFA adds an extra layer of security by requiring users to provide additional authentication factors beyond their passwords.</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-15</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Strictly enforce the organization’s password management policy to guarantee compliance with security standards. Enforcing this policy includes implementing technical controls, monitoring adherence, and responding to non-compliance.</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-16</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Enforce a password management policy that mandates strong and complex passwords, and prohibits the reuse of previously used passwords. This policy helps protect user accounts from unauthorized access due to weak or compromised passwords.</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-17</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">All sensitive data is encrypted when stored on systems or devices.</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-19</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Establish and maintain an accurate, detailed, and up-to-date inventory of all data assets. This can include data stored in databases, file shares, and cloud storage.</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-20</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Data labeled according to classification level</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-24</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Automated backups are enabled for all high-risk data and critical systems.</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-25</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Business continuity and disaster recovery policy established</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-26</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">A comprehensive business continuity and disaster recovery policy is established, outlining the organization's strategies for responding to disruptive incidents and supporting business continuity.</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-27</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Establish a data recovery process that defines procedures for recovering data in case of data loss, corruption, or system failures. A robust data recovery process helps minimize downtime and data loss in critical situations.</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-28</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Regularly test the organization's disaster recovery plans to ensure their effectiveness and identify areas for improvement. Testing helps validate the ability to recover critical systems and operations in the event of a disaster.</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-29</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Isolate the recovery data from the production environment to prevent accidental overwriting or corruption of backups. Keeping recovery data separate helps maintain the integrity and availability of backup copies.</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-30</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">DMARC (Domain-based Message Authentication, Reporting, and Conformance) policy and verification mechanisms are implemented to prevent email spoofing and phishing attacks.</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-31</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Access to email accounts is restricted to administrators only, and isn't delegated to other non-admin users within the organization.</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-32</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Enforce automatic session locking to prevent unauthorized access to unattended devices. Automatic session locking helps protect sensitive data from unauthorized access and misuse.</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-35</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Ensure that unauthorized software is either removed from use on enterprise assets or receives a documented exception. Review monthly, or more frequently based on risk level, to ensure software compliance with the organizational policy.</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-36</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Restrict administrator access to critical systems and sensitive data based on the principle of least privilege, granting elevated permissions only when necessary for specific tasks and revoking them promptly after completion. Implement strong authentication mechanisms, such as multi-factor authentication, and regularly review and update administrator access rights to ensure they align with job responsibilities and maintain a secure environment.</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-37</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Firewall restricts public access to infrastructure</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-38</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Firewalls are configured to restrict public access to the organization's infrastructure components.</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-39</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Maintain a log of all infrastructure changes to track and document modifications made to critical systems and services. Logging infrastructure changes aids in audit trails, incident investigations, and accountability.</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-40</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Implement a review process for all proposed infrastructure changes before implementation. Reviews ensure that changes comply with security policies, do not introduce vulnerabilities, and align with the organization's requirements.</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-41</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Ensure the network infrastructure components (e.g., routers, switches, firewalls) are continuously updated with the latest security patches and firmware updates. Regular updates help address known vulnerabilities and enhance network security.</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-42</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Ensure that a process exists to address unauthorized assets on a periodic basis. This process should include regular audits of all assets and a procedure for handling unauthorized assets when they are discovered.</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-43</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Unique production database authentication enforced</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-44</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Enforce unique authentication mechanisms for accessing production databases, such as a unique username and password or SSH key.</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-45</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Utilize Virtual Private Network (VPN) connections to secure remote communications between users and the organization's internal network. VPNs provide encrypted and authenticated tunnels, ensuring secure data transmission over untrusted networks.</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-46</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Ensure sufficient storage capacity to retain audit logs for the required duration. Adequate audit log storage enables historical analysis and supports compliance requirements related to log retention.</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-49</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Establish a breach notification process that outlines the organization's procedures for detecting, assessing, and reporting security breaches. This process helps ensure timely and effective incident response.</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-50</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">An incident response policy is established that outlines the organization's approach and procedures for detecting, responding to, and recovering from cybersecurity incidents.</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-51</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Establish a structured process for conducting incident reviews following any security or operational incident affecting critical systems. This process is essential for understanding root causes, assessing the impact, and identifying improvement actions to prevent similar incidents in the future. Establish criteria for incidents requiring formal review, including any events affecting critical functions. Define the scope to include root cause analysis, impact assessment, response effectiveness, and corrective actions. For each qualifying incident, hold a review meeting promptly after resolution. Ensure that relevant stakeholders participate. Record detailed findings from each review, including root causes, identified vulnerabilities, and gaps in response. Document action items, timelines, and responsible parties for implementing corrective measures to prevent recurrence. Establish a follow-up process to verify that corrective actions are completed and effective.</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-54</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Establish and maintain an acceptable use policy that outlines permissible activities, systems, and data access for all users, contractors, and third parties interacting with the organization's information assets and technologies.</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-55</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Establish and maintain an accurate, detailed, and up-to-date inventory of all enterprise assets with the potential to store or process data. This can include end-user devices, network devices, IoT devices, and servers.</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-56</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Establish an asset management policy that outlines the guidelines for managing the organization's assets throughout their lifecycle.</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-57</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Establish a change management policy that defines procedures for controlling and documenting changes to systems, applications, and infrastructure.</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-58</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Establish and maintain a changelog to document all system changes, updates, and modifications.</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-59</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Up-to-date data-flow diagram(s) are maintained that show all account data flows across systems and networks, updated as needed when changes occur in the environment.</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-60</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Provide external support resources, such as documentation, user guides, and knowledge bases, to assist users in utilizing the organization's services effectively. Accessible support resources promote self-service and reduce support requests.</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-61</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">An offboarding process is established for departing employees to ensure that they are removed from relevant systems and accounts.</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-62</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">An onboarding process is established for new employees to ensure that they are properly trained and equipped to perform their job responsibilities.</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-63</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">A company-wide password manager is deployed to securely store and share credentials across the organization. All shared accounts and secrets are shared through the password manager using a principle of least privilege.</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-65</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Establish a physical security policy that outlines the organization's processes for protecting physical assets and resources.</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-66</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Clearly define roles and responsibilities for all employees within the organization. Specifying roles helps establish accountability and ensures that employees understand their duties and expectations.</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-67</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Establish a sanction policy that outlines the appropriate sanctions against workforce members who fail to comply with the organization's security policies and procedures. Sanctions help enforce accountability and deter employees from engaging in misconduct.</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-69</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Designate a security official who is responsible for the development, implementation, and oversight of security policies and procedures, as well as management of the incident response process.</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-70</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Ensure that system changes, updates, and maintenance activities are communicated internally to relevant teams and stakeholders. Internal communication helps coordinate efforts and minimize potential disruptions.</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-71</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Workstation use and security policy established</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">TC-72</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Establish a workstation use and security policy that outlines the appropriate use of workstations and security measures to protect them from unauthorized access. The policy helps safeguard the organization's assets and data.</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">DOC-1</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Centralized logging and monitoring services</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">DOC-2</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Encryption at rest using cloud provider–managed encryption mechanisms</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">DOC-3</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Security incidents can be reported through defined channels</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">DOC-4</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">9. Logical &amp; Physical Access Controls (CC6)</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">DOC-5</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Role-based access control is implemented for systems</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">DOC-6</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Multi-factor authentication is required for privileged access</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">DOC-7</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Access provisioning and deprovisioning procedures are documented</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">DOC-10</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Backup procedures are documented and performed</p></div><div class="unmatched-card"><div class="unmatched-card-header"><span class="badge badge-doc">Document</span><span class="ctrl-id">DOC-11</span><span class="badge badge-unmatched">unmatched</span></div><p class="control-text">Access to sensitive data is restricted based on roles</p></div></div></section><section class="results-section"><div class="section-header"><span class="section-title">Unmatched Base Controls</span><span class="section-count unmatched">33</span></div><div class="unmatched-grid"><div class="unmatched-card base-unmatched"><div class="unmatched-card-header"><span class="ctrl-id">CC 1.1, CC 1.4</span><span class="badge badge-unmatched">no source match</span></div><p class="control-text">The company performs background checks on new employees.</p></div><div class="unmatched-card base-unmatched"><div class="unmatched-card-header"><span class="ctrl-id">CC 1.1</span><span class="badge badge-unmatched">no source match</span></div><p class="control-text">The company requires contractor agreements to include a code of conduct or reference to the company code of conduct.</p></div><div class="unmatched-card base-unmatched"><div class="unmatched-card-header"><span class="ctrl-id">CC 1.1, CC 1.5</span><span class="badge badge-unmatched">no source match</span></div><p class="control-text">The company requires employees to acknowledge a code of conduct at the time of hire. Employees who violate the code of conduct are subject to disciplinary actions in accordance with a disciplinary policy.</p></div><div class="unmatched-card base-unmatched"><div class="unmatched-card-header"><span class="ctrl-id">CC 1.1</span><span class="badge badge-unmatched">no source match</span></div><p class="control-text">The company requires contractor agreements to include a code of conduct or reference to the company code of conduct.</p></div><div class="unmatched-card base-unmatched"><div class="unmatched-card-header"><span class="ctrl-id">CC 1.1</span><span class="badge badge-unmatched">no source match</span></div><p class="control-text">The company requires contractor agreements to include a code of conduct or reference to the company code of conduct.</p></div><div class="unmatched-card base-unmatched"><div class="unmatched-card-header"><span class="ctrl-id">CC 1.1, CC 1.4, CC 1.5</span><span class="badge badge-unmatched">no source match</span></div><p class="control-text">The company managers are required to complete performance evaluations for direct reports at least annually.</p></div><div class="unmatched-card base-unmatched"><div class="unmatched-card-header"><span class="ctrl-id">CC 1.2, CC 1.3</span><span class="badge badge-unmatched">no source match</span></div><p class="control-text">The company's board of directors has a documented charter that outlines its oversight responsibilities for internal control.</p></div><div class="unmatched-card base-unmatched"><div class="unmatched-card-header"><span class="ctrl-id">CC 1.2</span><span class="badge badge-unmatched">no source match</span></div><p class="control-text">The company's board of directors or a relevant subcommittee is briefed by senior management at least annually on the state of the company's cybersecurity and privacy risk. The board provides feedback and direction to management as needed.</p></div><div class="unmatched-card base-unmatched"><div class="unmatched-card-header"><span class="ctrl-id">CC 1.3, CC 2.2</span><span class="badge badge-unmatched">no source match</span></div><p class="control-text">The company management has established defined roles and responsibilities to oversee the design and implementation of information security controls.</p></div><div class="unmatched-card base-unmatched"><div class="unmatched-card-header"><span class="ctrl-id">CC 2.1, CC 4.1, CC 7.1, CC 7.2, CC 7.4, CC 8.1</span><span class="badge badge-unmatched">no source match</span></div><p class="control-text">Host-based vulnerability scans are performed at least quarterly on all external-facing systems. Critical and high vulnerabilities are tracked to remediation.</p></div><div class="unmatched-card base-unmatched"><div class="unmatched-card-header"><span class="ctrl-id">CC 2.1, CC 4.1, CC 4.2</span><span class="badge badge-unmatched">no source match</span></div><p class="control-text">The company performs control self-assessments at least annually to gain assurance that controls are in place and operating effectively. Corrective actions are taken based on relevant findings. If the company has committed to an SLA for a finding, the corrective action is completed within that SLA.</p></div><div class="unmatched-card base-unmatched"><div class="unmatched-card-header"><span class="ctrl-id">CC 2.2, CC 5.1, CC 5.2, CC 5.3</span><span class="badge badge-unmatched">no source match</span></div><p class="control-text">The company's information security policies and procedures are documented and reviewed at least annually.</p></div><div class="unmatched-card base-unmatched"><div class="unmatched-card-header"><span class="ctrl-id">CC 2.3</span><span class="badge badge-unmatched">no source match</span></div><p class="control-text">The company has an external-facing support system in place that allows users to report system information on failures, incidents, concerns, and other complaints to appropriate personnel.</p></div><div class="unmatched-card base-unmatched"><div class="unmatched-card-header"><span class="ctrl-id">CC 2.3</span><span class="badge badge-unmatched">no source match</span></div><p class="control-text">The company has an external-facing support system in place that allows users to report system information on failures, incidents, concerns, and other complaints to appropriate personnel.</p></div><div class="unmatched-card base-unmatched"><div class="unmatched-card-header"><span class="ctrl-id">CC 2.3, CC 9.2</span><span class="badge badge-unmatched">no source match</span></div><p class="control-text">The company has written agreements in place with vendors and related third-parties. These agreements include confidentiality and privacy commitments applicable to that entity.</p></div><div class="unmatched-card base-unmatched"><div class="unmatched-card-header"><span class="ctrl-id">CC 3.2, CC 4.1, CC 4.2, CC 5.3, CC 9.2</span><span class="badge badge-unmatched">no source match</span></div><p class="control-text">The company has a vendor management program in place. Components of this program include:
+- critical third-party vendor inventory;
+- vendor's security and privacy requirements; and
+- review of critical third-party vendors at least annually.</p></div><div class="unmatched-card base-unmatched"><div class="unmatched-card-header"><span class="ctrl-id">CC 3.2, CC 7.5</span><span class="badge badge-unmatched">no source match</span></div><p class="control-text">The company has a documented business continuity/disaster recovery (BC/DR) plan and tests it at least annually.</p></div><div class="unmatched-card base-unmatched"><div class="unmatched-card-header"><span class="ctrl-id">CC 3.2, CC 3.3, CC 3.4, CC 7.1, CC 9.1</span><span class="badge badge-unmatched">no source match</span></div><p class="control-text">The company's risk assessments are performed at least annually. As part of this process, threats and changes (environmental, regulatory, and technological) to service commitments are identified and the risks are formally assessed. The risk assessment includes a consideration of the potential for fraud and how fraud may impact the achievement of objectives.</p></div><div class="unmatched-card base-unmatched"><div class="unmatched-card-header"><span class="ctrl-id">CC 5.2, CC 5.3, CC 6.8, CC 8.1</span><span class="badge badge-unmatched">no source match</span></div><p class="control-text">The company has a formal systems development life cycle (SDLC) methodology in place that governs the development, acquisition, implementation, changes (including emergency changes), and maintenance of information systems and related technology requirements.</p></div><div class="unmatched-card base-unmatched"><div class="unmatched-card-header"><span class="ctrl-id">CC 5.3</span><span class="badge badge-unmatched">no source match</span></div><p class="control-text">The company's data backup policy documents requirements for backup and recovery of customer data.</p></div><div class="unmatched-card base-unmatched"><div class="unmatched-card-header"><span class="ctrl-id">CC 5.3, CC 7.1, CC 8.1</span><span class="badge badge-unmatched">no source match</span></div><p class="control-text">The company requires changes to software and infrastructure components of the service to be authorized, formally documented, tested, reviewed, and approved prior to being implemented in the production environment.</p></div><div class="unmatched-card base-unmatched"><div class="unmatched-card-header"><span class="ctrl-id">CC 6.2, CC 6.3, CC 6.5</span><span class="badge badge-unmatched">no source match</span></div><p class="control-text">The company completes termination checklists to ensure that access is revoked for terminated employees within SLAs.</p></div><div class="unmatched-card base-unmatched"><div class="unmatched-card-header"><span class="ctrl-id">CC 6.2, CC 6.3, CC 6.4</span><span class="badge badge-unmatched">no source match</span></div><p class="control-text">The company conducts access reviews at least quarterly for the in-scope system components to help ensure that access is restricted appropriately. Required changes are tracked to completion.</p></div><div class="unmatched-card base-unmatched"><div class="unmatched-card-header"><span class="ctrl-id">CC 6.5</span><span class="badge badge-unmatched">no source match</span></div><p class="control-text">The company purges or removes customer data containing confidential information from the application environment, in accordance with best practices, when customers leave the service.</p></div><div class="unmatched-card base-unmatched"><div class="unmatched-card-header"><span class="ctrl-id">CC 6.5</span><span class="badge badge-unmatched">no source match</span></div><p class="control-text">The company purges or removes customer data containing confidential information from the application environment, in accordance with best practices, when customers leave the service.</p></div><div class="unmatched-card base-unmatched"><div class="unmatched-card-header"><span class="ctrl-id">CC 6.6, CC 6.8, CC 7.2, CC 7.4, CC 8.1</span><span class="badge badge-unmatched">no source match</span></div><p class="control-text">The company has infrastructure supporting the service patched as a part of routine maintenance and as a result of identified vulnerabilities to help ensure that servers supporting the service are hardened against security threats.</p></div><div class="unmatched-card base-unmatched"><div class="unmatched-card-header"><span class="ctrl-id">CC 6.6, CC 7.2,</span><span class="badge badge-unmatched">no source match</span></div><p class="control-text">The company uses an intrusion detection system to provide continuous monitoring of the company's network and early detection of potential security breaches.</p></div><div class="unmatched-card base-unmatched"><div class="unmatched-card-header"><span class="ctrl-id">CC 6.6</span><span class="badge badge-unmatched">no source match</span></div><p class="control-text">The company reviews its firewall rulesets at least annually. Required changes are tracked to completion.</p></div><div class="unmatched-card base-unmatched"><div class="unmatched-card-header"><span class="ctrl-id">CC 6.8</span><span class="badge badge-unmatched">no source match</span></div><p class="control-text">The company deploys anti-malware technology to environments commonly susceptible to malicious attacks and configures this to be updated routinely, logged, and installed on all relevant systems.</p></div><div class="unmatched-card base-unmatched"><div class="unmatched-card-header"><span class="ctrl-id">CC 7.1, CC 7.2</span><span class="badge badge-unmatched">no source match</span></div><p class="control-text">The company's formal policies outline the requirements for the following functions related to IT / Engineering: 
+- vulnerability management;
+- system monitoring.</p></div><div class="unmatched-card base-unmatched"><div class="unmatched-card-header"><span class="ctrl-id">CC 7.4, CC 7.5</span><span class="badge badge-unmatched">no source match</span></div><p class="control-text">The company tests their incident response plan at least annually.</p></div><div class="unmatched-card base-unmatched"><div class="unmatched-card-header"><span class="ctrl-id">CC 9.1</span><span class="badge badge-unmatched">no source match</span></div><p class="control-text">The company maintains cybersecurity insurance to mitigate the financial impact of business disruptions.</p></div><div class="unmatched-card base-unmatched"><div class="unmatched-card-header"><span class="ctrl-id">CC 6.4</span><span class="badge badge-unmatched">no source match</span></div><p class="control-text">The company has processes in place for granting, changing, and terminating physical access to company data centers based on an authorization from control owners.</p></div></div></section></div></main></div></div>
+  
+
+</body></html>

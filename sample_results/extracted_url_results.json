@@ -1,0 +1,444 @@
+{
+    "controls": [
+        {
+            "control_id": "TC-1",
+            "text": "Implement a formal access granting process that ensures new access privileges are assigned based on the principle of least privilege, and require at least one employee to endorse the granting of new access.",
+            "domain": "Access Control",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-2",
+            "text": "Systematic controls are established in the access management policy for managing user access rights, ensuring appropriate, authorized access to systems and data.",
+            "domain": "Access Control",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-3",
+            "text": "Access requests to sensitive data required",
+            "domain": "Access Control",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-4",
+            "text": "To access sensitive data, employees must submit access requests that are approved and monitored.",
+            "domain": "Access Control",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-5",
+            "text": "Access requests to sensitive infrastructure required",
+            "domain": "Access Control",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-6",
+            "text": "To access sensitive infrastructure components, employees must submit access requests that are approved and monitored. This control helps ensure that only authorized personnel can access critical infrastructure, minimizing potential risks.",
+            "domain": "Access Control",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-7",
+            "text": "Implement a regular access review process to promptly remove access privileges from employees who no longer require them. This ensures that former employees or users do not retain unauthorized access to organizational resources.",
+            "domain": "Access Control",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-8",
+            "text": "An inventory of user accounts on critical and high-risk vendors that have access to in-scope systems and services is maintained, including essential details such as account owners, access privileges, associated roles, and vendor relationships where applicable. The inventory is reviewed and updated at least annually.",
+            "domain": "Access Control",
+            "specificity": "medium"
+        },
+        {
+            "control_id": "TC-9",
+            "text": "Monitor for dormant user accounts and disable or remove accounts that have been inactive for an extended period.",
+            "domain": "Monitoring",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-10",
+            "text": "Employee access is reviewed at least annually to ensure that access privileges are appropriate and that former employees or users do not retain unauthorized access.",
+            "domain": "Access Control",
+            "specificity": "medium"
+        },
+        {
+            "control_id": "TC-11",
+            "text": "Require multi-factor authentication (MFA) for administrative access to critical systems and services. MFA mitigates the risk of unauthorized administrative access and helps protect sensitive administrative functions.",
+            "domain": "Access Control",
+            "specificity": "medium"
+        },
+        {
+            "control_id": "TC-12",
+            "text": "Require all externally-exposed enterprise or third-party applications to enforce MFA, where supported. Enforcing MFA through a directory service or SSO provider is a satisfactory implementation of this safeguard.",
+            "domain": "General",
+            "specificity": "medium"
+        },
+        {
+            "control_id": "TC-13",
+            "text": "Multi-factor authentication (MFA) is required for accessing critical services and infrastructure unless a documented exception is in place where MFA is not supported.",
+            "domain": "Access Control",
+            "specificity": "medium"
+        },
+        {
+            "control_id": "TC-14",
+            "text": "Require multi-factor authentication (MFA) for accessing sensitive infrastructure. MFA adds an extra layer of security by requiring users to provide additional authentication factors beyond their passwords.",
+            "domain": "Access Control",
+            "specificity": "medium"
+        },
+        {
+            "control_id": "TC-15",
+            "text": "Strictly enforce the organization’s password management policy to guarantee compliance with security standards. Enforcing this policy includes implementing technical controls, monitoring adherence, and responding to non-compliance.",
+            "domain": "Monitoring",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-16",
+            "text": "Enforce a password management policy that mandates strong and complex passwords, and prohibits the reuse of previously used passwords. This policy helps protect user accounts from unauthorized access due to weak or compromised passwords.",
+            "domain": "Access Control",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-17",
+            "text": "All sensitive data is encrypted when stored on systems or devices.",
+            "domain": "Encryption",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-18",
+            "text": "All data is encrypted when transmitted over networks, both within the organization's internal network and external connections.",
+            "domain": "Encryption",
+            "specificity": "medium"
+        },
+        {
+            "control_id": "TC-19",
+            "text": "Establish and maintain an accurate, detailed, and up-to-date inventory of all data assets. This can include data stored in databases, file shares, and cloud storage.",
+            "domain": "Data Protection",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-20",
+            "text": "Data labeled according to classification level",
+            "domain": "Data Protection",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-21",
+            "text": "All data is labeled based on its classification level. This ensures that appropriate access controls and handling procedures are applied to protect information.",
+            "domain": "Access Control",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-22",
+            "text": "Data management and retention policy established",
+            "domain": "Data Protection",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-23",
+            "text": "A data management and retention policy is established, outlining guidelines for how long data should be retained and how it should be managed throughout its lifecycle.",
+            "domain": "Data Protection",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-24",
+            "text": "Automated backups are enabled for all high-risk data and critical systems.",
+            "domain": "Business Continuity",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-25",
+            "text": "Business continuity and disaster recovery policy established",
+            "domain": "General",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-26",
+            "text": "A comprehensive business continuity and disaster recovery policy is established, outlining the organization's strategies for responding to disruptive incidents and supporting business continuity.",
+            "domain": "Incident Response",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-27",
+            "text": "Establish a data recovery process that defines procedures for recovering data in case of data loss, corruption, or system failures. A robust data recovery process helps minimize downtime and data loss in critical situations.",
+            "domain": "Data Protection",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-28",
+            "text": "Regularly test the organization's disaster recovery plans to ensure their effectiveness and identify areas for improvement. Testing helps validate the ability to recover critical systems and operations in the event of a disaster.",
+            "domain": "General",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-29",
+            "text": "Isolate the recovery data from the production environment to prevent accidental overwriting or corruption of backups. Keeping recovery data separate helps maintain the integrity and availability of backup copies.",
+            "domain": "Business Continuity",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-30",
+            "text": "DMARC (Domain-based Message Authentication, Reporting, and Conformance) policy and verification mechanisms are implemented to prevent email spoofing and phishing attacks.",
+            "domain": "General",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-31",
+            "text": "Access to email accounts is restricted to administrators only, and isn't delegated to other non-admin users within the organization.",
+            "domain": "Access Control",
+            "specificity": "medium"
+        },
+        {
+            "control_id": "TC-32",
+            "text": "Enforce automatic session locking to prevent unauthorized access to unattended devices. Automatic session locking helps protect sensitive data from unauthorized access and misuse.",
+            "domain": "Access Control",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-33",
+            "text": "Data stored on end-user devices (e.g., laptops, mobile devices) is encrypted to protect it in case of device loss or theft.",
+            "domain": "Encryption",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-34",
+            "text": "A mobile device management (MDM) solution is used to manage and secure end-user devices.",
+            "domain": "General",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-35",
+            "text": "Ensure that unauthorized software is either removed from use on enterprise assets or receives a documented exception. Review monthly, or more frequently based on risk level, to ensure software compliance with the organizational policy.",
+            "domain": "General",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-36",
+            "text": "Restrict administrator access to critical systems and sensitive data based on the principle of least privilege, granting elevated permissions only when necessary for specific tasks and revoking them promptly after completion. Implement strong authentication mechanisms, such as multi-factor authentication, and regularly review and update administrator access rights to ensure they align with job responsibilities and maintain a secure environment.",
+            "domain": "Access Control",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-37",
+            "text": "Firewall restricts public access to infrastructure",
+            "domain": "Access Control",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-38",
+            "text": "Firewalls are configured to restrict public access to the organization's infrastructure components.",
+            "domain": "Access Control",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-39",
+            "text": "Maintain a log of all infrastructure changes to track and document modifications made to critical systems and services. Logging infrastructure changes aids in audit trails, incident investigations, and accountability.",
+            "domain": "Logging",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-40",
+            "text": "Implement a review process for all proposed infrastructure changes before implementation. Reviews ensure that changes comply with security policies, do not introduce vulnerabilities, and align with the organization's requirements.",
+            "domain": "General",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-41",
+            "text": "Ensure the network infrastructure components (e.g., routers, switches, firewalls) are continuously updated with the latest security patches and firmware updates. Regular updates help address known vulnerabilities and enhance network security.",
+            "domain": "Network Security",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-42",
+            "text": "Ensure that a process exists to address unauthorized assets on a periodic basis. This process should include regular audits of all assets and a procedure for handling unauthorized assets when they are discovered.",
+            "domain": "General",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-43",
+            "text": "Unique production database authentication enforced",
+            "domain": "Data Protection",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-44",
+            "text": "Enforce unique authentication mechanisms for accessing production databases, such as a unique username and password or SSH key.",
+            "domain": "Access Control",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-45",
+            "text": "Utilize Virtual Private Network (VPN) connections to secure remote communications between users and the organization's internal network. VPNs provide encrypted and authenticated tunnels, ensuring secure data transmission over untrusted networks.",
+            "domain": "Encryption",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-46",
+            "text": "Ensure sufficient storage capacity to retain audit logs for the required duration. Adequate audit log storage enables historical analysis and supports compliance requirements related to log retention.",
+            "domain": "Logging",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-47",
+            "text": "Maintain a robust and up-to-date audit log management process. This process should include guidelines for capturing, storing, and monitoring audit logs, ensuring the availability and integrity of essential security event data.",
+            "domain": "Logging",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-48",
+            "text": "Enable the collection of audit logs from critical systems and applications. Audit logs capture essential security events and activities, providing valuable information for incident detection, investigation, and compliance purposes.",
+            "domain": "Logging",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-49",
+            "text": "Establish a breach notification process that outlines the organization's procedures for detecting, assessing, and reporting security breaches. This process helps ensure timely and effective incident response.",
+            "domain": "Incident Response",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-50",
+            "text": "An incident response policy is established that outlines the organization's approach and procedures for detecting, responding to, and recovering from cybersecurity incidents.",
+            "domain": "Incident Response",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-51",
+            "text": "Establish a structured process for conducting incident reviews following any security or operational incident affecting critical systems. This process is essential for understanding root causes, assessing the impact, and identifying improvement actions to prevent similar incidents in the future. Establish criteria for incidents requiring formal review, including any events affecting critical functions. Define the scope to include root cause analysis, impact assessment, response effectiveness, and corrective actions. For each qualifying incident, hold a review meeting promptly after resolution. Ensure that relevant stakeholders participate. Record detailed findings from each review, including root causes, identified vulnerabilities, and gaps in response. Document action items, timelines, and responsible parties for implementing corrective measures to prevent recurrence. Establish a follow-up process to verify that corrective actions are completed and effective.",
+            "domain": "Incident Response",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-52",
+            "text": "The performance of the organization's infrastructure components is monitored to detect potential issues or anomalies that may impact security or reliability.",
+            "domain": "Monitoring",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-53",
+            "text": "Implement a centralized log management solution to collect, store, and analyze logs from various systems and applications. Centralized log management simplifies log review, correlation, and monitoring for potential security incidents.",
+            "domain": "Logging",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-54",
+            "text": "Establish and maintain an acceptable use policy that outlines permissible activities, systems, and data access for all users, contractors, and third parties interacting with the organization's information assets and technologies.",
+            "domain": "Access Control",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-55",
+            "text": "Establish and maintain an accurate, detailed, and up-to-date inventory of all enterprise assets with the potential to store or process data. This can include end-user devices, network devices, IoT devices, and servers.",
+            "domain": "Data Protection",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-56",
+            "text": "Establish an asset management policy that outlines the guidelines for managing the organization's assets throughout their lifecycle.",
+            "domain": "General",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-57",
+            "text": "Establish a change management policy that defines procedures for controlling and documenting changes to systems, applications, and infrastructure.",
+            "domain": "General",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-58",
+            "text": "Establish and maintain a changelog to document all system changes, updates, and modifications.",
+            "domain": "Logging",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-59",
+            "text": "Up-to-date data-flow diagram(s) are maintained that show all account data flows across systems and networks, updated as needed when changes occur in the environment.",
+            "domain": "Data Protection",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-60",
+            "text": "Provide external support resources, such as documentation, user guides, and knowledge bases, to assist users in utilizing the organization's services effectively. Accessible support resources promote self-service and reduce support requests.",
+            "domain": "Access Control",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-61",
+            "text": "An offboarding process is established for departing employees to ensure that they are removed from relevant systems and accounts.",
+            "domain": "General",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-62",
+            "text": "An onboarding process is established for new employees to ensure that they are properly trained and equipped to perform their job responsibilities.",
+            "domain": "General",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-63",
+            "text": "A company-wide password manager is deployed to securely store and share credentials across the organization. All shared accounts and secrets are shared through the password manager using a principle of least privilege.",
+            "domain": "General",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-64",
+            "text": "Physical access to the organization's facilities, equipment, and systems is restricted to authorized personnel only.",
+            "domain": "Access Control",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-65",
+            "text": "Establish a physical security policy that outlines the organization's processes for protecting physical assets and resources.",
+            "domain": "General",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-66",
+            "text": "Clearly define roles and responsibilities for all employees within the organization. Specifying roles helps establish accountability and ensures that employees understand their duties and expectations.",
+            "domain": "General",
+            "specificity": "medium"
+        },
+        {
+            "control_id": "TC-67",
+            "text": "Establish a sanction policy that outlines the appropriate sanctions against workforce members who fail to comply with the organization's security policies and procedures. Sanctions help enforce accountability and deter employees from engaging in misconduct.",
+            "domain": "General",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-68",
+            "text": "Security awareness training is conducted annually for all employees, covering cybersecurity threats, social engineering, authentication best practices, and handling of sensitive data.",
+            "domain": "Data Protection",
+            "specificity": "medium"
+        },
+        {
+            "control_id": "TC-69",
+            "text": "Designate a security official who is responsible for the development, implementation, and oversight of security policies and procedures, as well as management of the incident response process.",
+            "domain": "Incident Response",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-70",
+            "text": "Ensure that system changes, updates, and maintenance activities are communicated internally to relevant teams and stakeholders. Internal communication helps coordinate efforts and minimize potential disruptions.",
+            "domain": "General",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-71",
+            "text": "Workstation use and security policy established",
+            "domain": "General",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-72",
+            "text": "Establish a workstation use and security policy that outlines the appropriate use of workstations and security measures to protect them from unauthorized access. The policy helps safeguard the organization's assets and data.",
+            "domain": "Access Control",
+            "specificity": "low"
+        },
+        {
+            "control_id": "TC-73",
+            "text": "A risk management policy is established that outlines the organization's approach to identifying, assessing, and mitigatin",
+            "domain": "General",
+            "specificity": "low"
+        }
+    ],
+    "source": "trust_center",
+    "url": "https://trust.oneleet.com/novoflow?tab=securityControls"
+}
